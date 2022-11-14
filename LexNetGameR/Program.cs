@@ -10,7 +10,6 @@
             Console.CursorVisible = false;
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Yellow;
-            //new MusicPlayer().Play();
             //Game, GameState, GameMode, Controller, Pawn (Hero,baddy), Map, Gameworld, Entities(hero, Creatures
             Game game = new();
             game.Run();

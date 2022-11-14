@@ -25,36 +25,34 @@ namespace LexNetGameR
 
     internal class Map
     {
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public Vector2Int Size { get; set; } 
         public string Name { get; set; }
 
         public Cell[,] cells;
 
-        public Map(string name, int height,int width)
+        public Map(string name, Vector2Int size)
         {
             Name = name;
-            Height = height;
-            Width = width;
-            Vector2 position = new();
+            Size = size;
+            Vector2Int position = new();
 
-            cells = new Cell[Width, Height];
-            for (int y=0; y<Height; y++)
+            cells = new Cell[Size.X, Size.Y];
+            for (int y=0; y<Size.Y; y++)
             {
-                for (int x=0; x<Width; x++)
+                for (int x=0; x<Size.X; x++)
                 {
                     cells[x, y] = new Cell(position);
                 }
             }
         }
-        public Cell GetCell(int x, int y)
+        public Cell GetCell(Vector2Int pos)
         {
-            return cells[x,y];
+            return cells[pos.X,pos.Y];
         }
     }
     internal struct Vector2Int{
-        int X;
-        int Y;
+        public int X {get;set;}
+        public int Y {get;set;}
         public Vector2Int(int x, int y){
             X=x;
             Y=y;

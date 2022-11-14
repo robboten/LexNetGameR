@@ -10,15 +10,22 @@ namespace LexNetGameR
     {
         public string Symbol { get; set; }
         public string Name { get; set; }    
-        public ConsoleColor Color { get; set; } =ConsoleColor.Green;
+        public ConsoleColor Color { get; set; } = ConsoleColor.Green;
         public Vector2Int Position {get;set;}
         public bool IsActive {get;set;}
         public bool IsStatic {get;set;}
-        public Entity(string symbol, string name, ConsoleColor color)
+        public Entity(Vector2Int position,string symbol, string name, ConsoleColor color)
         {
+            Position=position;
             Symbol = symbol;
             Name = name;
             Color = color;
+        }
+        public Entity(Vector2Int position,string symbol, string name)
+        {
+            Position=position;
+            Symbol = symbol;
+            Name = name;
         }
 
     }
