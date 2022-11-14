@@ -11,15 +11,20 @@ namespace LexNetGameR
 
     internal class Cell
     {
-        public string Symbol => ". ";
+        public string Symbol;
         public Vector2Int Position;    
         public Cell(Vector2Int pos)
         {
             Position = pos;
+            Symbol = ". ";
         }
         public string GetCellSymbol()
         {
             return Symbol;
+        }
+        public void SetCellSymbol(Entity entity)
+        {
+            Symbol=entity.Symbol;
         }
     }
 
