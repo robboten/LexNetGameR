@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LexNetGameR", "LexNetGameR\LexNetGameR.csproj", "{EFA7143C-2657-4C11-80DB-CCA82D4B050A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFA7143C-2657-4C11-80DB-CCA82D4B050A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFA7143C-2657-4C11-80DB-CCA82D4B050A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFA7143C-2657-4C11-80DB-CCA82D4B050A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFA7143C-2657-4C11-80DB-CCA82D4B050A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {51FD9484-38DC-4637-962F-0A5171B43A1E}
+	EndGlobalSection
+EndGlobal
