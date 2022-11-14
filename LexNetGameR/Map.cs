@@ -12,12 +12,12 @@ namespace LexNetGameR
     internal class Cell
     {
         public string Symbol => ". ";
-        public Vector2 Pos { get; set; }    
-        public Cell(Vector2 pos)
+        public Vector2Int Position;    
+        public Cell(Vector2Int pos)
         {
-            Pos = pos;
+            Position = pos;
         }
-        public string GetCell()
+        public string GetCellSymbol()
         {
             return Symbol;
         }
@@ -50,6 +50,14 @@ namespace LexNetGameR
         public Cell GetCell(int x, int y)
         {
             return cells[x,y];
+        }
+    }
+    internal struct Vector2Int{
+        int X;
+        int Y;
+        public Vector2Int(int x, int y){
+            X=x;
+            Y=y;
         }
     }
 
