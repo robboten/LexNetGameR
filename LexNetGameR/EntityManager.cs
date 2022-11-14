@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text; 
 using System.Threading.Tasks;
 
 namespace LexNetGameR
 {
-    internal class GameState
+    internal class EntityManager
     {
+        public Entity[,] entities;
     }
 }
