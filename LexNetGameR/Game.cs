@@ -11,9 +11,32 @@ namespace LexNetGameR
 {
     internal class Game
     {
+        char[,] maze =
+        {
+            { '╔','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','╗'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '║','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','║'},
+            { '╚','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','╝'}
 
+        };
     string WallsString =
-    "╔══════════════════╗" +
+    "" +
     "║                  ║" +
     "║   ╔═╗   ╔═════╗  ║" +
     "║   ╚═╝   ╚═════╝  ║" +
@@ -50,6 +73,8 @@ namespace LexNetGameR
         }
         public void Run()
         {
+            //Console.WriteLine(maze.GetLength(0));
+            //Console.WriteLine(maze.GetLength(1));
             //create entities
             em.CreateEntity("Hero",HeroStartCell,'H',ConsoleColor.Blue,true);
 
@@ -70,13 +95,13 @@ namespace LexNetGameR
                     if (entityInList.Value.IsPlayer)
                         Acceleration = Controller.GetInput();
                     else if (entityInList.Value.IsStatic)
-                        Acceleration=Vector2Int.Zero;
+                        Acceleration = Vector2Int.Zero;
                     else
                         Acceleration = Controller.AIInput();
 
                     currentEnt.SetPos(Acceleration);
                 }
-                
+
             }
         }
 
@@ -84,12 +109,17 @@ namespace LexNetGameR
         //break this up.. DrawMap does the game things now. Not how I want it
         public void DrawMap(EntityManager em)
         {
+
+            Vector2Int Size = MapSize;
+            Size = new Vector2Int(maze.GetLength(0), maze.GetLength(1));
+
             Console.Clear();
             char BoardAt(int x, int y) => WallsString[y * 6 + x];
 
-            for (int y = 0; y < MapSize.Y; y++)
+            for (int y = 0; y < Size.Y; y++)
             {
-                for (int x = 0; x < MapSize.X; x++)
+                int xx = 0;
+                for (int x = 0; x < Size.X; x++)
                 {
                     //var mapCell = cells[x, y];
                     var mapPos = new Vector2Int(x, y);
@@ -131,15 +161,17 @@ namespace LexNetGameR
                     {
 
                         //bool IsWall(int x, int y) => BoardAt(x, y) is not ' ';
-                        //symbol = BoardAt(x,y);//mapCell.GetCellSymbol();
-                        symbol = '.';
+                        symbol = maze[y,x];//mapCell.GetCellSymbol();
+                        //symbol = '.';
                         Console.ForegroundColor = ConsoleColor.White;//mapCell.Color;
                     }
-                    Console.Write(symbol.ToString() + ' ');
+                    Console.Write(symbol.ToString() );
+                    xx = x;
                 }
+               // Console.Write($"{xx},{y}:{maze[1,xx]}");
                 Console.WriteLine();
             }
-            Console.WriteLine($"Score: {Score}");
+            Console.WriteLine($"Score: {Score} ");
         }
     }
 
