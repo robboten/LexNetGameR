@@ -8,19 +8,52 @@ namespace LexNetGameR
 {
     internal class EntityManager
     {
-        List<Entity> Entities;
+        Dictionary<string, Entity> EntitiesDict;
         public EntityManager(){
-            Entities=new();
+            EntitiesDict =new Dictionary<string, Entity>();
         }
         public void AddEntity(Entity entity){
-            Entities.Add(entity);
+            EntitiesDict.Add(entity.Name,entity);
         }
         public void RemoveEntity(Entity entity){
-            Entities.Remove(entity);
+            EntitiesDict.Remove(entity.Name);
         }
-        public void CreateEntity(Vector2Int position, string symbol, string name){
-            Entity entity=new(position, symbol, name);
+        public void CreateEntity(string name, char symbol, bool isPlayer = false, bool isStatic=false)
+        {
+            Entity entity = new(name, symbol)
+            {
+                IsPlayer = isPlayer,
+                IsStatic = isStatic
+            };
             AddEntity(entity);
         }
+        public void CreateEntity(string name, Vector2Int position, char symbol, bool isPlayer=false){
+            Entity entity = new(name, symbol )
+            {
+                Position = position,
+                IsPlayer = isPlayer
+            };
+            AddEntity(entity);
+        }
+        public void CreateEntity(string name, Vector2Int position, char symbol, ConsoleColor color, bool isPlayer = false)
+        {
+            Entity entity = new(name, symbol)
+            {
+                Position=position,
+                Color = color,
+                IsPlayer = isPlayer
+            };
+            AddEntity(entity);
+        }
+        public Entity GetEntity(string name)
+        {
+            return EntitiesDict[name];
+        }
+
+        public Dictionary<string, Entity> GetEntityList()
+        {
+            return EntitiesDict;
+        }
+
     }
 }
