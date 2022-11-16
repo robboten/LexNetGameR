@@ -13,7 +13,7 @@ namespace LexNetGameR.Entities
         public ConsoleColor Color { get; set; } = ConsoleColor.Green;
         public Vector2Int Position { get; set; }
         public Vector2Int Acceleration { get; set; } 
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; } = true; //not sure this is needed since if it's not in list it won't be active... but just in case..
         public bool IsStatic { get; set; } = false;
         public bool IsPlayer { get; set; } = false;
 

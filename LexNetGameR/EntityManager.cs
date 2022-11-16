@@ -21,19 +21,10 @@ namespace LexNetGameR
         }
         public void RemoveEntity(Entity entity){
             EntitiesList.Remove(entity);
+            entity.IsActive = false;
         }
 
-        public void CreateEntity(char symbol, Vector2Int position, ConsoleColor color, bool isPlayer = false, bool isStatic = false)
-        {
-            Entity entity = new(symbol )
-            {
-                Color = color,
-                IsPlayer = isPlayer,
-                IsStatic = isStatic,
-                Position=position,
-            };
-            AddEntity(entity);
-        }
+        //can I have only one but still make different ones?
         public void CreateEntity(char symbol, Vector2Int position, ConsoleColor color, bool isPlayer = false)
         {
             Entity entity = new(symbol)
@@ -62,11 +53,16 @@ namespace LexNetGameR
             AddEntity(entity);
         }
 
-        //use or not?
-        //public Entity GetEntity(string name)
-        //{
-        //    return EntitiesDict[name];
-        //}
+        public List<Entity> CreateEnemy2(Vector2Int position)
+        {
+            Enemy entity = new(position)
+            {
+                Position = position,
+            };
+            AddEntity(entity);
+            return EntitiesList;
+        }
+
 
         public List<Entity> GetEntityList()
         {

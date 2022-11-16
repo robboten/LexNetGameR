@@ -36,47 +36,23 @@ namespace LexNetGameR
         //drop mines from inv?
         //add timer
 
-        //isolate entities more into em?
-
-        public int Score;
+        int Score;
         Vector2Int MapSize;
 
+        //em keep track of all entities
         readonly EntityManager em;
 
         //Break out some and make a list of levels?
         //what to move into init instead?
         public Game()
         {
-            em = new();
-
             Score = 0;
 
+            em = new();
+
             MapSize = new Vector2Int(maze.GetLength(1), maze.GetLength(0)); //needed?
-
-            MakeEntities();
         }
 
-        private void MakeEntities()
-        {
-            //create entities
-            em.CreateEntity('H', new Vector2Int(1, 1), UI.Blue, true);
-
-            //make dict or smt with values for each level
-            int GhostsNr = 5;
-            int CoinsNr = 7;
-
-            // Enumerable.Range(0,CoinsNr).Select(i=> em.CreateEnemy(MapSize)); eeh?
-
-            for (int i = 0; i < GhostsNr; i++)
-            {
-                em.CreateEnemy(RandomPosWithCheck());
-            }
-
-            for (int i = 0; i < CoinsNr; i++)
-            {
-                em.CreateStatic(RandomPosWithCheck());
-            }
-        }
 
         public void Run()
         {
@@ -89,13 +65,37 @@ namespace LexNetGameR
 
         private void Init()
         {
+            MakeEntities();
             UI.InitUI();
             DrawMap();
 
+            //render all entities to show them before move
             //can I set acceleration to zero AND call render to get rid of overload?
             em.GetEntityList().ForEach(c => c.RenderEntity(Vector2Int.Zero)); 
 
             ShowPoints();
+        }
+
+        private void MakeEntities()
+        {
+            //create entities
+            em.CreateEntity('H', new Vector2Int(1, 1), UI.Blue, true);
+
+            //make dict or smt with values for each level
+            int GhostsNr = 5;
+            int CoinsNr = 7;
+
+            //var res= Enumerable.Range(0, GhostsNr).Select(i=> em.CreateEnemy2(RandomPosWithCheck()).ToList()); //eeh doesn't work
+
+            for (int i = 0; i < GhostsNr; i++)
+            {
+                em.CreateEnemy(RandomPosWithCheck());
+            }
+
+            for (int i = 0; i < CoinsNr; i++)
+            {
+                em.CreateStatic(RandomPosWithCheck());
+            }
         }
 
         public void ShowPoints()
@@ -118,22 +118,20 @@ namespace LexNetGameR
 
         private void Move()
         {
-            Vector2Int Acceleration;
+            //remake this with linq/delegate?
 
-            //remake this with linq?
+            //var player = em.GetEntityList().FirstOrDefault(e => e.IsPlayer == true);
+            //have to check if not null... so is it really better?
+            //player.Acceleration = Controller.GetInput();
 
             foreach (var entity in em.GetEntityList())
             {
-
                 if (entity.IsPlayer)
-                    Acceleration = Controller.GetInput();
-                else if (!entity.IsStatic)
-                    Acceleration = Controller.AIInput();
-                else
-                    Acceleration = Vector2Int.Zero;
+                    entity.Acceleration = Controller.GetInput();
+                else if (!entity.IsStatic) //for all other that is not statics
+                    entity.Acceleration = Controller.AIInput();
 
-
-                entity.Acceleration=Acceleration;
+                //easy way to skip this for all that is not changed?
                 if (CanMove(entity.Position, entity.Acceleration))
                 {
                     entity.RenderEntityTrace(maze[entity.Position.Y, entity.Position.X]);
@@ -179,10 +177,10 @@ namespace LexNetGameR
         {
             var entitiesList = em.GetEntityList();
 
-            //get all entities at position
-            var entitiesAtPos = entitiesList.Where(xy => xy.Position == pos);
+            //get all entities at position that is active
+            var entitiesAtPos = entitiesList.Where(e => e.Position == pos && e.IsActive).ToList();
             //get count of entities at this pos
-            var NrEntities = entitiesAtPos.Count();
+            var NrEntities = entitiesAtPos.Count;
 
             //check if there are more than one entity at pos
             if (NrEntities > 1)
@@ -195,14 +193,27 @@ namespace LexNetGameR
                 {
                     //check what entity is involved in collision
                     var collisionEntities = entitiesAtPos.Where(e => e.IsPlayer == false);
+
                     foreach (var entity in collisionEntities)
                     {
                         //---------- does not work correctly atm (since Lists instead of Dict)
+                        //because of deferred or smt else?
+
                         //make an X to mark action
                         UI.OutputSymbol(UI.DarkRed, "X", playerEntitiy.Position);
                         //remove the entity from the ent manager list
                         em.RemoveEntity(entity);
-                        Score++; //diversify score?
+                        if (entity is Enemy)
+                        {
+                            var temp = (Enemy)entity;
+                            Score += temp.Points;
+                        } else if(entity is Static)
+                        {
+                            var temp = (Enemy)entity;
+                            Score += temp.Points;
+                        }
+
+                        //Score++; //diversify score?
                         ShowPoints();
                     }
                 }
