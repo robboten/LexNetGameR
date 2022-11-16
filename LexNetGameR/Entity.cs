@@ -10,7 +10,6 @@ namespace LexNetGameR
     internal class Entity
     {
         public char Symbol { get; set; }
-        public string Name { get; set; }    
         public ConsoleColor Color { get; set; } = ConsoleColor.Green;
         public Vector2Int Position {get;set;}
         public Vector2Int Acceleration { get; set; } //keep or not?
@@ -18,19 +17,17 @@ namespace LexNetGameR
         public bool IsStatic {get;set;}
         public bool IsPlayer {get;set;}
 
-        public Entity(string name,char symbol)
+        public Entity(char symbol)
         {
             Position = new(1,1);
             Symbol = symbol;
-            Name = name;
             IsActive = true;
         }
 
-        public Entity(string name, char symbol, Vector2Int position)
+        public Entity(char symbol, Vector2Int position)
         {
             Position = position;
             Symbol = symbol;
-            Name = name;
             IsActive = true;
         }
         public Vector2Int GetPos()

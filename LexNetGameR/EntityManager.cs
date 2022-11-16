@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -9,20 +10,21 @@ namespace LexNetGameR
 {
     internal class EntityManager
     {
-        Dictionary<string, Entity> EntitiesDict;
+        readonly List<Entity> EntitiesList;
+
         public EntityManager(){
-            EntitiesDict =new Dictionary<string, Entity>();
+            EntitiesList = new List<Entity>();
         }
         public void AddEntity(Entity entity){
-            EntitiesDict.Add(entity.Name,entity);
+            EntitiesList.Add(entity);
         }
         public void RemoveEntity(Entity entity){
-            EntitiesDict.Remove(entity.Name);
+            EntitiesList.Remove(entity);
         }
 
-        public void CreateEntity(string name, char symbol, Vector2Int position, ConsoleColor color, bool isPlayer = false, bool isStatic = false)
+        public void CreateEntity(char symbol, Vector2Int position, ConsoleColor color, bool isPlayer = false, bool isStatic = false)
         {
-            Entity entity = new(name, symbol )
+            Entity entity = new(symbol )
             {
                 Color = color,
                 IsPlayer = isPlayer,
@@ -31,9 +33,9 @@ namespace LexNetGameR
             };
             AddEntity(entity);
         }
-        public void CreateEntity(string name, char symbol, Vector2Int position, ConsoleColor color, bool isPlayer = false)
+        public void CreateEntity(char symbol, Vector2Int position, ConsoleColor color, bool isPlayer = false)
         {
-            Entity entity = new(name, symbol)
+            Entity entity = new(symbol)
             {
                 Position=position,
                 Color = color,
@@ -48,10 +50,9 @@ namespace LexNetGameR
         //    return EntitiesDict[name];
         //}
 
-        public Dictionary<string, Entity> GetEntityList()
+        public List<Entity> GetEntityList()
         {
-            return EntitiesDict;
+            return EntitiesList.ToList(); //how to safeguard multiple changes at once?
         }
-
     }
 }

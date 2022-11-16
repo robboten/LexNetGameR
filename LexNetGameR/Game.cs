@@ -55,20 +55,20 @@ namespace LexNetGameR
             //make entities subclasses for oop or keep more data oriented design ?
             Vector2Int HeroStartCell = new(1, 1);
 
-            string[] Ghosts = new [] { "g1","g2","g3","g4","g5" };
-            string[] Coins = new [] { "c1", "c2", "c3", "c4", "c5" };
+            int GhostsNr = 5;
+            int CoinsNr = 7;
 
             //create entities
-            em.CreateEntity("Hero", 'H', HeroStartCell, UI.Blue,true);
+            em.CreateEntity('H', HeroStartCell, UI.Blue,true);
 
-            foreach (string ghost in Ghosts)
+            for (int i = 0; i < GhostsNr; i++)
             {
-                em.CreateEntity(ghost, '†', RanPosWithCheck(), UI.DarkGray,false,false);
+                em.CreateEntity('†', RanPosWithCheck(), UI.DarkGray,false,false);
             }
-                
-            foreach (string coins in Coins)
+
+            for (int i = 0; i < CoinsNr; i++)
             {                
-                em.CreateEntity(coins, '$', RanPosWithCheck(), UI.Yellow, false, true);
+                em.CreateEntity('$', RanPosWithCheck(), UI.Yellow, false, true);
             }     
         }
 
@@ -85,11 +85,9 @@ namespace LexNetGameR
         {
             UI.InitUI();
             DrawMap();
-            foreach (var entityInList in em.GetEntityList())
-            {
-                var currentEnt = entityInList.Value;
-                RenderEntity(currentEnt, Vector2Int.Zero);
-            }
+
+            em.GetEntityList().ForEach(c => RenderEntity(c, Vector2Int.Zero));
+
             ShowPoints();
         }
 
@@ -117,7 +115,7 @@ namespace LexNetGameR
 
             foreach (var entityInList in em.GetEntityList())
             {
-                var currentEnt = entityInList.Value;
+                var currentEnt = entityInList;
 
                 if (currentEnt.IsPlayer)
                     Acceleration = Controller.GetInput();
@@ -162,7 +160,7 @@ namespace LexNetGameR
             var entitiesList = em.GetEntityList();
 
             //get all entities at position
-            var entitiesAtPos = entitiesList.Where(xy => xy.Value.Position == pos); 
+            var entitiesAtPos = entitiesList.Where(xy => xy.Position == pos);
             //get count of entities at this pos
             var NrEntities = entitiesAtPos.Count();
 
@@ -170,19 +168,20 @@ namespace LexNetGameR
             if (NrEntities > 1)
             {
                 //get player
-                var playerEntitiy = entitiesAtPos.FirstOrDefault(e => e.Value.IsPlayer == true).Value;
+                var playerEntitiy = entitiesAtPos.FirstOrDefault(e => e.IsPlayer == true);
 
                 //is any of them player?
                 if (playerEntitiy != null)
                 {
                     //check what entity is involved in collision
-                    var collisionEntities = entitiesAtPos.Where(e => e.Value.IsPlayer == false);
-                    foreach(var entity in collisionEntities)
+                    var collisionEntities = entitiesAtPos.Where(e => e.IsPlayer == false);
+                    foreach (var entity in collisionEntities)
                     {
+                        //---------- does not work correctly atm (since Lists instead of Dict)
                         //make an X to mark action
                         UI.OutputSymbol(UI.DarkRed, "X", playerEntitiy.Position);
                         //remove the entity from the ent manager list
-                        em.RemoveEntity(entity.Value);
+                        em.RemoveEntity(entity);
                         Score++; //diversify score?
                         ShowPoints();
                     }
