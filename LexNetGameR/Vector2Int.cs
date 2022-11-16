@@ -23,6 +23,14 @@ namespace LexNetGameR
             Y = y;
         }
 
+        public static Vector2Int GetRandom(int maxY, int maxX)
+        {
+            Random random = new();
+            Vector2Int randV2I = new(random.Next(0, maxX), random.Next(0, maxY)); //make random method - check for walls...
+            return randV2I;
+
+        }
+
         //borrowed from Unity @ https://gist.github.com/twobob/c6b5bfa1101164c3a0bc0881189eeceb
         public static Vector2Int operator +(Vector2Int a, Vector2Int b)
         {

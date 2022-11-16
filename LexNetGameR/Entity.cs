@@ -21,8 +21,15 @@ namespace LexNetGameR
 
         public Entity(string name,char symbol)
         {
-            Random random = new();
-            Position = new(random.Next(0, 10), random.Next(0, 10)); //change to map size!
+            Position = new(1,1);
+            Symbol = symbol;
+            Name = name;
+            IsActive = true;
+        }
+
+        public Entity(string name, char symbol, Vector2Int position)
+        {
+            Position = position;
             Symbol = symbol;
             Name = name;
             IsActive = true;
@@ -31,12 +38,16 @@ namespace LexNetGameR
         {
             return Position;
         }
-        public void SetPos(Vector2Int Acc)
+        public void SetPosAcc(Vector2Int Acc)
         {
             Position += Acc;
             Vector2Int pos = Position;
             pos.Clamp(0, 9); //why doesn't this work directly on Position?
             Position=pos;
+        }
+        public void SetPos(Vector2Int Pos)
+        {
+            Position = Pos;
         }
 
     }

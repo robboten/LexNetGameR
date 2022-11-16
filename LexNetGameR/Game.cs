@@ -13,42 +13,25 @@ namespace LexNetGameR
     {
         char[,] maze =
         {
-            { '╔','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','╗'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ','╔','═','═','═','╗',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ','║',' ',' ',' ','║',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ','║',' ',' ',' ','║',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ','╚','═','═','═','╝',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '╚','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','╝'}
+            { '╔','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','╗'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ','╔','═','═','═','╗',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ','╚','═','═','═','╝',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','╔','═','═','═','╗',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','╚','═','═','═','╝',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ','╔','═','═','═','╗',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ','╚','═','═','═','╝',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '╚','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','╝'}
 
         };
-    string MazeString =
-    "╔══════════════════╗" +
-    "║                  ║" +
-    "║   ╔═╗   ╔═════╗  ║" +
-    "║   ╚═╝   ╚═════╝  ║" +
-    "║                  ║" +
-    "║                  ║" +
-    "║                  ║" +
-    "║                  ║" +
-    "║                  ║" +
-    "║                  ║" +
-    "╚══════════════════╝";
-
-
 
         //Break out some of this into Gameworld and make a list of levels?
 
@@ -60,13 +43,17 @@ namespace LexNetGameR
         readonly string[] Coins;
 
         readonly EntityManager em;
-  
+
+        //
         public Game()
         {
             Score = 0;
-            MapSize = new(20, 10); //read from map instead
-            HeroStartCell = new(0, 0);
+
+            HeroStartCell = new(1, 1);
             em = new();
+
+            MapSize = new Vector2Int(maze.GetLength(1), maze.GetLength(0));
+
             Ghosts = new string[] {"g1","g2","g3","g4","g5"};
             Coins = new string[] { "c1", "c2", "c3", "c4", "c5" };
 
@@ -74,30 +61,60 @@ namespace LexNetGameR
             Console.BackgroundColor = ConsoleColor.Black;
 
             //create entities
-            em.CreateEntity("Hero", 'H', HeroStartCell, ConsoleColor.Blue, true);
+            em.CreateEntity("Hero", 'H', HeroStartCell, ConsoleColor.Blue,true);
 
             foreach (string ghost in Ghosts)
-                em.CreateEntity(ghost, '†');
-
+            {
+                em.CreateEntity(ghost, '†', RanPos(), ConsoleColor.DarkGray,false,false);
+            }
+                
             foreach (string coins in Coins)
-                em.CreateEntity(coins, '$', ConsoleColor.Yellow, false, true);
+            {                
+                em.CreateEntity(coins, '$', RanPos(), ConsoleColor.Yellow, false, true);
+            }
+                
+        }
+
+        public void ShowPoints()
+        {
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(0, MapSize.Y+2);
+            Console.WriteLine("                     ");
+            Console.SetCursorPosition(0, MapSize.Y + 2);
+            Console.WriteLine(($"Score: {Score} "));
+        }
+
+        public Vector2Int RanPos()
+        {
+            Vector2Int randPos;
+            while (true) //ugly check.. work on this
+            {
+                randPos = Vector2Int.GetRandom(MapSize.X, MapSize.Y); //make random method - check for walls...
+                if (CanMove(randPos))
+                    return randPos;
+            }
         }
         public void Run()
         {
 
-            //RenderEntity(em.GetEntity("Hero"));
-            //RenderEntity(em.GetEntity("g1"));
             DrawMap();
+            ShowPoints();
+            Init();
             while (true)//(!(Console.KeyAvailable))
             {
                 //Console.Clear();
-                
                 Move();
-                
             }
         }
+        private void Init()
+        {
 
-        
+            foreach (var entityInList in em.GetEntityList())
+            {
+                var currentEnt = entityInList.Value;
+                RenderEntity(currentEnt, Vector2Int.Zero);
+            }
+        }
         private void Move()
         {
             Vector2Int Acceleration;
@@ -113,31 +130,19 @@ namespace LexNetGameR
                 else
                     Acceleration = Controller.AIInput();
 
-
-                    RenderEntityTrace(currentEnt);
-                    currentEnt.SetPos(Acceleration); // --- fix this ! shouldn't move under some conditions ...
-                    RenderEntity(currentEnt);
-
-                    
+                RenderEntity(currentEnt, Acceleration);
+                CheckPos(currentEnt.Position); //where to call this?
             }
         }
 
-        //draw map as static first
-        //in move draw each char relative
-
-        //break this up.. DrawMap does the game things now. Not how I want it
-        //use relative position instead
         public void DrawMap()
         {
             char symbol;
-            Vector2Int Size = MapSize; //clean
-            Size = new Vector2Int(maze.GetLength(0), maze.GetLength(1));
-
             Console.SetCursorPosition(0, 0);
 
-            for (int y = 0; y < Size.Y; y++)
+            for (int y = 0; y < MapSize.Y; y++)
             {
-                for (int x = 0; x < Size.X; x++)
+                for (int x = 0; x < MapSize.X; x++)
                 {
                         symbol = maze[y,x];//mapCell.GetCellSymbol();
                         Console.ForegroundColor = ConsoleColor.White;
@@ -146,67 +151,85 @@ namespace LexNetGameR
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine($"Score: {Score} "); //put into own method
         }
 
         bool IsWall(int x, int y) => maze[y, x] is not ' ';
+
         public bool CanMove(Vector2Int pos)
         {
-            if (!IsWall(pos.X, pos.Y))  
-                return true;
+            if (pos.X>0 && pos.X<maze.GetLength(1) && pos.Y > 0 && pos.Y < maze.GetLength(0))
+                if (!IsWall(pos.X, pos.Y))
+                    return true;
             return false;
-            //bool 
         }
 
-        public void CheckPos(Vector2Int mapPos)
+        public void CheckPos(Vector2Int pos) //change to entity as argument?
         {
             var entitiesList = em.GetEntityList();
 
-            var entitiesAtPos = entitiesList.Where(xy => xy.Value.Position == mapPos);
+            //get all entities at position
+            var entitiesAtPos = entitiesList.Where(xy => xy.Value.Position == pos); 
+            //get count of entities at this pos
+            var NrEntities = entitiesAtPos.Count();
 
-            var EntityAtPos = entitiesAtPos.FirstOrDefault().Value; //should entity be exposed like this?
-
-            var playerEntitiy = entitiesList.Where(e => e.Value.IsPlayer == true).FirstOrDefault().Value;
-
-            var NrEntities = entitiesList.Where(xy => xy.Value.Position == mapPos).Count();
-            //collision occured with player
-            //if (NrEntities > 1 && playerEntitiy.Position == mapPos)
-            //{
-            //    symbol = 'X';
-            //    Console.ForegroundColor = ConsoleColor.Red;
-            //    var collisionEntity = entitiesAtPos.Where(e => e.Value.IsPlayer == false).FirstOrDefault().Value;
-            //    em.RemoveEntity(collisionEntity);
-            //    Score++;
-            //}
-            //else
-            //{
-            //}
+            //check if there are more than one entity at pos
+            if (NrEntities > 1)
+            {
+                //is any of them player?
+                //get player
+                var playerEntitiy = entitiesAtPos.Where(e => e.Value.IsPlayer == true).FirstOrDefault().Value;
+                
+                //collision occured with player
+                if (playerEntitiy != null)
+                {
+                    var collisionEntities = entitiesAtPos.Where(e => e.Value.IsPlayer == false);
+                    foreach(var entity in collisionEntities)
+                    {
+                        OutputSymbol(ConsoleColor.DarkRed, 'X', playerEntitiy.Position);
+                        //remove the entity from the ent manager list
+                        em.RemoveEntity(entity.Value);
+                        Score++;
+                        ShowPoints();
+                    }
+                }
+                //get other entity
+            }
         }
 
         //put into entities class?
-        public void RenderEntity(Entity entity)
+        public void RenderEntity(Entity entity, Vector2Int acceleration)
         {
-            char symbol=entity.Symbol;
-
-            Vector2Int entPos=entity.GetPos();
-
-            if (CanMove(entPos))
-            {
-                Console.ForegroundColor = entity.Color;
-                Console.SetCursorPosition(entPos.X,entPos.Y);
-                Console.Write(symbol.ToString());
-                //}
-            }
-        }
-        public void RenderEntityTrace(Entity entity)
-        {
+            
             char symbol = entity.Symbol;
 
+            Vector2Int entPos=entity.GetPos();
+            Vector2Int newPos=entPos += acceleration;
+
+            if (CanMove(newPos))
+            {
+                RenderEntityTrace(entity); //remove char from old pos
+                entity.SetPos(newPos); //set new pos
+
+                OutputSymbol(entity.Color, entity.Symbol,entity.Position);
+            }
+        }
+
+        private static void OutputSymbol(ConsoleColor color, char symbol, Vector2Int pos)
+        {
+            //output the symbol at the new pos
+            Console.ForegroundColor = color;
+            Console.SetCursorPosition(pos.X, pos.Y);
+            Console.Write(symbol.ToString());
+        }
+
+        public void RenderEntityTrace(Entity entity)
+        {
             Vector2Int entPos = entity.GetPos();
 
             Console.ForegroundColor = ConsoleColor.White;
             Console.SetCursorPosition(entPos.X, entPos.Y);
             Console.Write(maze[entPos.Y, entPos.X].ToString());
+
         }
     }
 }
