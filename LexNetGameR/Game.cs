@@ -11,7 +11,7 @@ namespace LexNetGameR
 {
     internal class Game
     {
-        char[,] maze =
+        readonly char[,] maze =
         {
             { '╔','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','╗'},
             { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
@@ -32,59 +32,75 @@ namespace LexNetGameR
             { '╚','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','╝'}
 
         };
+        
+        //drop mines from inv?
 
-        //Break out some of this into Gameworld and make a list of levels?
+        //isolate entities more into em?
 
         public int Score;
-
         Vector2Int MapSize;
-        Vector2Int HeroStartCell;
-        readonly string[] Ghosts;
-        readonly string[] Coins;
 
         readonly EntityManager em;
 
-        //
+        //Break out some and make a list of levels?
+        //what to move into init instead?
         public Game()
         {
-            Score = 0;
-
-            HeroStartCell = new(1, 1);
             em = new();
 
-            MapSize = new Vector2Int(maze.GetLength(1), maze.GetLength(0));
+            Score = 0;
 
-            Ghosts = new string[] {"g1","g2","g3","g4","g5"};
-            Coins = new string[] { "c1", "c2", "c3", "c4", "c5" };
+            MapSize = new Vector2Int(maze.GetLength(1), maze.GetLength(0)); //needed?
 
-            Console.CursorVisible = false;
-            Console.BackgroundColor = ConsoleColor.Black;
+            //make entities subclasses for oop or keep more data oriented design ?
+            Vector2Int HeroStartCell = new(1, 1);
+
+            string[] Ghosts = new [] { "g1","g2","g3","g4","g5" };
+            string[] Coins = new [] { "c1", "c2", "c3", "c4", "c5" };
 
             //create entities
-            em.CreateEntity("Hero", 'H', HeroStartCell, ConsoleColor.Blue,true);
+            em.CreateEntity("Hero", 'H', HeroStartCell, UI.Blue,true);
 
             foreach (string ghost in Ghosts)
             {
-                em.CreateEntity(ghost, '†', RanPos(), ConsoleColor.DarkGray,false,false);
+                em.CreateEntity(ghost, '†', RanPosWithCheck(), UI.DarkGray,false,false);
             }
                 
             foreach (string coins in Coins)
             {                
-                em.CreateEntity(coins, '$', RanPos(), ConsoleColor.Yellow, false, true);
+                em.CreateEntity(coins, '$', RanPosWithCheck(), UI.Yellow, false, true);
+            }     
+        }
+
+        public void Run()
+        {
+            Init();
+            while (true)//(!(Console.KeyAvailable))
+            {
+                Move();
             }
-                
+        }
+
+        private void Init()
+        {
+            UI.InitUI();
+            DrawMap();
+            foreach (var entityInList in em.GetEntityList())
+            {
+                var currentEnt = entityInList.Value;
+                RenderEntity(currentEnt, Vector2Int.Zero);
+            }
+            ShowPoints();
         }
 
         public void ShowPoints()
         {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.SetCursorPosition(0, MapSize.Y+2);
-            Console.WriteLine("                     ");
-            Console.SetCursorPosition(0, MapSize.Y + 2);
-            Console.WriteLine(($"Score: {Score} "));
+            Vector2Int position = new (0, MapSize.Y + 2);
+            string str = $"Score: {Score} ";
+            UI.OutputSymbol(UI.White, str, position); 
         }
 
-        public Vector2Int RanPos()
+        public Vector2Int RanPosWithCheck()
         {
             Vector2Int randPos;
             while (true) //ugly check.. work on this
@@ -94,27 +110,7 @@ namespace LexNetGameR
                     return randPos;
             }
         }
-        public void Run()
-        {
 
-            DrawMap();
-            ShowPoints();
-            Init();
-            while (true)//(!(Console.KeyAvailable))
-            {
-                //Console.Clear();
-                Move();
-            }
-        }
-        private void Init()
-        {
-
-            foreach (var entityInList in em.GetEntityList())
-            {
-                var currentEnt = entityInList.Value;
-                RenderEntity(currentEnt, Vector2Int.Zero);
-            }
-        }
         private void Move()
         {
             Vector2Int Acceleration;
@@ -131,25 +127,23 @@ namespace LexNetGameR
                     Acceleration = Controller.AIInput();
 
                 RenderEntity(currentEnt, Acceleration);
-                CheckPos(currentEnt.Position); //where to call this?
+                CheckPos(currentEnt.Position); //where to call this? use entity instead of pos?
             }
         }
 
         public void DrawMap()
         {
             char symbol;
-            Console.SetCursorPosition(0, 0);
+            //Console.SetCursorPosition(0, 0);
 
             for (int y = 0; y < MapSize.Y; y++)
             {
                 for (int x = 0; x < MapSize.X; x++)
                 {
-                        symbol = maze[y,x];//mapCell.GetCellSymbol();
-                        Console.ForegroundColor = ConsoleColor.White;
-
-                    Console.Write(symbol.ToString() );
+                    symbol = maze[y,x];
+                    UI.OutputSymbol(UI.White, symbol.ToString(), new Vector2Int(x,y));
                 }
-                Console.WriteLine();
+                UI.NewLine(); //how to get rid of console here?
             }
         }
 
@@ -175,61 +169,51 @@ namespace LexNetGameR
             //check if there are more than one entity at pos
             if (NrEntities > 1)
             {
-                //is any of them player?
                 //get player
-                var playerEntitiy = entitiesAtPos.Where(e => e.Value.IsPlayer == true).FirstOrDefault().Value;
-                
-                //collision occured with player
+                var playerEntitiy = entitiesAtPos.FirstOrDefault(e => e.Value.IsPlayer == true).Value;
+
+                //is any of them player?
                 if (playerEntitiy != null)
                 {
+                    //check what entity is involved in collision
                     var collisionEntities = entitiesAtPos.Where(e => e.Value.IsPlayer == false);
                     foreach(var entity in collisionEntities)
                     {
-                        OutputSymbol(ConsoleColor.DarkRed, 'X', playerEntitiy.Position);
+                        //make an X to mark action
+                        UI.OutputSymbol(UI.DarkRed, "X", playerEntitiy.Position);
                         //remove the entity from the ent manager list
                         em.RemoveEntity(entity.Value);
-                        Score++;
+                        Score++; //diversify score?
                         ShowPoints();
                     }
                 }
-                //get other entity
+                //get other entity collisions for more complexity
             }
         }
 
         //put into entities class?
         public void RenderEntity(Entity entity, Vector2Int acceleration)
         {
-            
-            char symbol = entity.Symbol;
-
             Vector2Int entPos=entity.GetPos();
             Vector2Int newPos=entPos += acceleration;
 
             if (CanMove(newPos))
             {
-                RenderEntityTrace(entity); //remove char from old pos
+                RenderEntityTrace(entity); //remove char from old pos instead of redrawing everything.. good or not?
                 entity.SetPos(newPos); //set new pos
 
-                OutputSymbol(entity.Color, entity.Symbol,entity.Position);
+                UI.OutputSymbol(entity.Color, entity.Symbol.ToString(),entity.Position);
             }
         }
 
-        private static void OutputSymbol(ConsoleColor color, char symbol, Vector2Int pos)
-        {
-            //output the symbol at the new pos
-            Console.ForegroundColor = color;
-            Console.SetCursorPosition(pos.X, pos.Y);
-            Console.Write(symbol.ToString());
-        }
-
+        //for now just redraw map at old position
         public void RenderEntityTrace(Entity entity)
         {
             Vector2Int entPos = entity.GetPos();
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.SetCursorPosition(entPos.X, entPos.Y);
-            Console.Write(maze[entPos.Y, entPos.X].ToString());
-
+            UI.OutputSymbol(UI.White, maze[entPos.Y, entPos.X].ToString(), entPos);
         }
+
+        //move to ui
+
     }
 }

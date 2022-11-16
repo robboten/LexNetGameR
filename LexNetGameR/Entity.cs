@@ -9,12 +9,11 @@ namespace LexNetGameR
 {
     internal class Entity
     {
-        //make id to identify without name?
         public char Symbol { get; set; }
         public string Name { get; set; }    
         public ConsoleColor Color { get; set; } = ConsoleColor.Green;
         public Vector2Int Position {get;set;}
-        public Vector2Int Acceleration { get; set; }
+        public Vector2Int Acceleration { get; set; } //keep or not?
         public bool IsActive {get;set;}
         public bool IsStatic {get;set;}
         public bool IsPlayer {get;set;}

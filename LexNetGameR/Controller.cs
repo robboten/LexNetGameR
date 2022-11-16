@@ -16,8 +16,8 @@ namespace LexNetGameR
         public static Vector2Int AIInput()
         {
             Random random = new();
-            Vector2Int GhostCell = new(random.Next(-1,2), random.Next(-1, 2)); //exclusive max
-            return GhostCell;
+            Vector2Int acc = new(random.Next(-1,2), random.Next(-1, 2)); //exclusive max
+            return acc;
         }
     }
 }

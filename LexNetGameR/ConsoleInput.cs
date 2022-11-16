@@ -29,6 +29,7 @@ namespace LexNetGameR
                 //case ConsoleKey.P:
                 //    PickUp();
                 //    break;
+                //case quit... return false
             }
         }
     }
