@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
-using System.Text; 
+using System.Text;
 using System.Threading.Tasks;
+using LexNetGameR.Entities;
 
 namespace LexNetGameR
 {
@@ -40,6 +41,23 @@ namespace LexNetGameR
                 Position=position,
                 Color = color,
                 IsPlayer = isPlayer
+            };
+            AddEntity(entity);
+        }
+
+        public void CreateStatic(Vector2Int position)
+        {
+            Static entity = new(position)
+            {
+                Position = position,
+            };
+            AddEntity(entity);
+        }
+        public void CreateEnemy(Vector2Int position)
+        {
+            Enemy entity = new(position)
+            {
+                Position = position,
             };
             AddEntity(entity);
         }

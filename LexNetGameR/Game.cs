@@ -5,7 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-
+using LexNetGameR.Entities;
 
 namespace LexNetGameR
 {
@@ -34,6 +34,7 @@ namespace LexNetGameR
         };
         
         //drop mines from inv?
+        //add timer
 
         //isolate entities more into em?
 
@@ -52,24 +53,29 @@ namespace LexNetGameR
 
             MapSize = new Vector2Int(maze.GetLength(1), maze.GetLength(0)); //needed?
 
-            //make entities subclasses for oop or keep more data oriented design ?
-            Vector2Int HeroStartCell = new(1, 1);
+            MakeEntities();
+        }
 
+        private void MakeEntities()
+        {
+            //create entities
+            em.CreateEntity('H', new Vector2Int(1, 1), UI.Blue, true);
+
+            //make dict or smt with values for each level
             int GhostsNr = 5;
             int CoinsNr = 7;
 
-            //create entities
-            em.CreateEntity('H', HeroStartCell, UI.Blue,true);
+            // Enumerable.Range(0,CoinsNr).Select(i=> em.CreateEnemy(MapSize)); eeh?
 
             for (int i = 0; i < GhostsNr; i++)
             {
-                em.CreateEntity('†', RanPosWithCheck(), UI.DarkGray,false,false);
+                em.CreateEnemy(RandomPosWithCheck());
             }
 
             for (int i = 0; i < CoinsNr; i++)
-            {                
-                em.CreateEntity('$', RanPosWithCheck(), UI.Yellow, false, true);
-            }     
+            {
+                em.CreateStatic(RandomPosWithCheck());
+            }
         }
 
         public void Run()
@@ -86,7 +92,8 @@ namespace LexNetGameR
             UI.InitUI();
             DrawMap();
 
-            em.GetEntityList().ForEach(c => RenderEntity(c, Vector2Int.Zero));
+            //can I set acceleration to zero AND call render to get rid of overload?
+            em.GetEntityList().ForEach(c => c.RenderEntity(Vector2Int.Zero)); 
 
             ShowPoints();
         }
@@ -98,12 +105,12 @@ namespace LexNetGameR
             UI.OutputSymbol(UI.White, str, position); 
         }
 
-        public Vector2Int RanPosWithCheck()
+        public Vector2Int RandomPosWithCheck()
         {
             Vector2Int randPos;
             while (true) //ugly check.. work on this
             {
-                randPos = Vector2Int.GetRandom(MapSize.X, MapSize.Y); //make random method - check for walls...
+                randPos = Vector2Int.GetRandom(MapSize.X, MapSize.Y);
                 if (CanMove(randPos))
                     return randPos;
             }
@@ -113,35 +120,39 @@ namespace LexNetGameR
         {
             Vector2Int Acceleration;
 
-            foreach (var entityInList in em.GetEntityList())
+            //remake this with linq?
+
+            foreach (var entity in em.GetEntityList())
             {
-                var currentEnt = entityInList;
 
-                if (currentEnt.IsPlayer)
+                if (entity.IsPlayer)
                     Acceleration = Controller.GetInput();
-                else if (currentEnt.IsStatic)
-                    Acceleration = Vector2Int.Zero;
-                else
+                else if (!entity.IsStatic)
                     Acceleration = Controller.AIInput();
+                else
+                    Acceleration = Vector2Int.Zero;
 
-                RenderEntity(currentEnt, Acceleration);
-                CheckPos(currentEnt.Position); //where to call this? use entity instead of pos?
+
+                entity.Acceleration=Acceleration;
+                if (CanMove(entity.Position, entity.Acceleration))
+                {
+                    entity.RenderEntityTrace(maze[entity.Position.Y, entity.Position.X]);
+                    entity.RenderEntity();
+                }
+                    
+                CheckPos(entity.Position); //where to call this? use entity instead of pos?
             }
         }
 
         public void DrawMap()
         {
-            char symbol;
-            //Console.SetCursorPosition(0, 0);
-
             for (int y = 0; y < MapSize.Y; y++)
             {
                 for (int x = 0; x < MapSize.X; x++)
                 {
-                    symbol = maze[y,x];
-                    UI.OutputSymbol(UI.White, symbol.ToString(), new Vector2Int(x,y));
+                    UI.OutputSymbol(UI.White, maze[y, x].ToString(), new Vector2Int(x,y));
                 }
-                UI.NewLine(); //how to get rid of console here?
+                UI.NewLine();
             }
         }
 
@@ -150,6 +161,15 @@ namespace LexNetGameR
         public bool CanMove(Vector2Int pos)
         {
             if (pos.X>0 && pos.X<maze.GetLength(1) && pos.Y > 0 && pos.Y < maze.GetLength(0))
+                if (!IsWall(pos.X, pos.Y))
+                    return true;
+            return false;
+        }
+        //how to get rid of this one?
+        public bool CanMove(Vector2Int pos, Vector2Int acc)
+        {
+            pos += acc;
+            if (pos.X > 0 && pos.X < maze.GetLength(1) && pos.Y > 0 && pos.Y < maze.GetLength(0))
                 if (!IsWall(pos.X, pos.Y))
                     return true;
             return false;
@@ -187,32 +207,9 @@ namespace LexNetGameR
                     }
                 }
                 //get other entity collisions for more complexity
+
+                //see if em is empty except player for win
             }
         }
-
-        //put into entities class?
-        public void RenderEntity(Entity entity, Vector2Int acceleration)
-        {
-            Vector2Int entPos=entity.GetPos();
-            Vector2Int newPos=entPos += acceleration;
-
-            if (CanMove(newPos))
-            {
-                RenderEntityTrace(entity); //remove char from old pos instead of redrawing everything.. good or not?
-                entity.SetPos(newPos); //set new pos
-
-                UI.OutputSymbol(entity.Color, entity.Symbol.ToString(),entity.Position);
-            }
-        }
-
-        //for now just redraw map at old position
-        public void RenderEntityTrace(Entity entity)
-        {
-            Vector2Int entPos = entity.GetPos();
-            UI.OutputSymbol(UI.White, maze[entPos.Y, entPos.X].ToString(), entPos);
-        }
-
-        //move to ui
-
     }
 }
