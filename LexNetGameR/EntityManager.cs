@@ -27,15 +27,17 @@ namespace LexNetGameR
             };
             AddEntity(entity);
         }
-        public void CreateEntity(string name, Vector2Int position, char symbol, bool isPlayer=false){
+        public void CreateEntity(string name, char symbol, ConsoleColor color, bool isPlayer = false, bool isStatic = false)
+        {
             Entity entity = new(name, symbol )
             {
-                Position = position,
-                IsPlayer = isPlayer
+                Color = color,
+                IsPlayer = isPlayer,
+                IsStatic = isStatic
             };
             AddEntity(entity);
         }
-        public void CreateEntity(string name, Vector2Int position, char symbol, ConsoleColor color, bool isPlayer = false)
+        public void CreateEntity(string name, char symbol, Vector2Int position, ConsoleColor color, bool isPlayer = false)
         {
             Entity entity = new(name, symbol)
             {

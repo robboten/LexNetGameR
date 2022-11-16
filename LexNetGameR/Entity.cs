@@ -37,8 +37,6 @@ namespace LexNetGameR
             Vector2Int pos = Position;
             pos.Clamp(0, 9); //why doesn't this work directly on Position?
             Position=pos;
-            //Console.WriteLine(Position.V2ToString());
-            //Console.WriteLine(pos.V2ToString());
         }
 
     }
