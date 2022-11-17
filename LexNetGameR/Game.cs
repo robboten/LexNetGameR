@@ -70,8 +70,7 @@ namespace LexNetGameR
             DrawMap();
 
             //render all entities to show them before move
-            //can I set acceleration to zero AND call render to get rid of overload?
-            em.GetEntityList().ForEach(c => c.RenderEntity(Vector2Int.Zero)); 
+            em.GetEntityList().ForEach(c => c.RenderEntity()); 
 
             ShowPoints();
         }
@@ -96,6 +95,11 @@ namespace LexNetGameR
             {
                 em.CreateStatic(RandomPosWithCheck());
             }
+        }
+
+        void MakeEntGen()
+        {
+
         }
 
         public void ShowPoints()
@@ -209,11 +213,10 @@ namespace LexNetGameR
                             Score += temp.Points;
                         } else if(entity is Static)
                         {
-                            var temp = (Enemy)entity;
+                            var temp = (Static)entity;
                             Score += temp.Points;
                         }
 
-                        //Score++; //diversify score?
                         ShowPoints();
                     }
                 }

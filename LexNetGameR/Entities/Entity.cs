@@ -24,6 +24,12 @@ namespace LexNetGameR.Entities
             Symbol = symbol;
         }
 
+        public Entity(Vector2Int position)
+        {
+            Position = position;
+        }
+
+
         public Entity(char symbol, Vector2Int position)
         {
             Position = position;
