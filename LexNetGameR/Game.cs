@@ -7,6 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using LexNetGameR.Entities;
 
+//ideas - todo
+//drop mines from inv?
+//add timer
+
 namespace LexNetGameR
 {
     internal class Game
@@ -32,27 +36,21 @@ namespace LexNetGameR
             { '╚','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','╝'}
 
         };
-        
-        //drop mines from inv?
-        //add timer
 
         int Score;
         Vector2Int MapSize;
 
         //em keep track of all entities
         readonly EntityManager em;
+        //readonly Manager<Entity> m;
 
-        //Break out some and make a list of levels?
-        //what to move into init instead?
         public Game()
         {
+            //m = new();
             Score = 0;
-
             em = new();
-
             MapSize = new Vector2Int(maze.GetLength(1), maze.GetLength(0)); //needed?
         }
-
 
         public void Run()
         {

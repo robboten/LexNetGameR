@@ -9,9 +9,9 @@ using LexNetGameR.Entities;
 
 namespace LexNetGameR
 {
-    internal class Manager<T>
+    internal class Manager<T> where T : Entity
     {
-        readonly List<T> ItemList;
+        private readonly List<T> ItemList;
 
         public Manager(){
             ItemList = new List<T>();
@@ -21,15 +21,15 @@ namespace LexNetGameR
         }
         public void RemoveItem(T item){
             ItemList.Remove(item);
+            item.IsActive = false;
         }
 
         public void CreateItem(Vector2Int position)
         {
-            Entity entity = new(position)
-            {
-                Position = position,
-            };
-            //AddEntity(entity); ????
+            Entity entity = new(position);
+            //ItemList.Add(entity);
+            //AddItem<Entity>(entity);
+            //??????
         }
 
         public List<T> GetEntityList()
