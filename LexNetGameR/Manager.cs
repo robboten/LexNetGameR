@@ -24,13 +24,13 @@ namespace LexNetGameR
             item.IsActive = false;
         }
 
-        public void CreateItem(Vector2Int position)
-        {
-            Entity entity = new(position);
-            //ItemList.Add(entity);
-            //AddItem<Entity>(entity);
-            //??????
-        }
+        //public void CreateItem(Vector2Int position)
+        //{
+        //    Entity entity = new(position);
+        //    //ItemList.Add(entity);
+        //    //AddItem<Entity>(entity);
+        //    //??????
+        //}
 
         public List<T> GetEntityList()
         {

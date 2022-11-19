@@ -23,12 +23,24 @@ namespace LexNetGameR
             Y = y;
         }
 
+        public void Set(Tuple<int,int> xy)
+        {
+            X = xy.Item1;
+            Y = xy.Item2;
+        }
+
         public static Vector2Int GetRandom(int maxY, int maxX)
         {
             Random random = new();
             Vector2Int randV2I = new(random.Next(0, maxX), random.Next(0, maxY)); //make random method - check for walls...
             return randV2I;
+        }
 
+        public static Vector2Int GetRandom(Tuple<int,int> max)
+        {
+            Random random = new();
+            Vector2Int randV2I = new(random.Next(0, max.Item1), random.Next(0, max.Item2)); //make random method - check for walls...
+            return randV2I;
         }
 
         //borrowed from Unity @ https://gist.github.com/twobob/c6b5bfa1101164c3a0bc0881189eeceb

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using LexNetGameR.Entities;
 
@@ -15,172 +17,188 @@ namespace LexNetGameR
 {
     internal class Game
     {
-        readonly char[,] maze =
-        {
-            { '╔','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','╗'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ','╔','═','═','═','╗',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ','╚','═','═','═','╝',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','╔','═','═','═','╗',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','╚','═','═','═','╝',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ','╔','═','═','═','╗',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ','╚','═','═','═','╝',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
-            { '╚','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','╝'}
-
-        };
-
         int Score;
-        Vector2Int MapSize;
+        readonly Map map;
 
-        //em keep track of all entities
+        //em keeps track of all entities
         readonly EntityManager em;
-        //readonly Manager<Entity> m;
 
         public Game()
         {
-            //m = new();
             Score = 0;
             em = new();
-            MapSize = new Vector2Int(maze.GetLength(1), maze.GetLength(0)); //needed?
+            map = new();
         }
 
+        /// <summary>
+        /// main game loop
+        /// </summary>
         public void Run()
         {
             Init();
             while (true)//(!(Console.KeyAvailable))
             {
-                Move();
-            }
+                UpdateEntities();
+            } 
         }
 
+        /// <summary>
+        /// Initialize the game
+        /// </summary>
         private void Init()
         {
-            MakeEntities();
             UI.InitUI();
-            DrawMap();
+            MakeEntities();
+            map.DrawMap();
 
             //render all entities to show them before move
-            em.GetEntityList().ForEach(c => c.RenderEntity()); 
+            em.GetEntityList().ToList().ForEach(c => c.RenderEntity()); 
 
             ShowPoints();
         }
 
+        /// <summary>
+        /// set up all the entities for the level
+        /// </summary>
         private void MakeEntities()
         {
-            //create entities
-            em.CreateEntity('H', new Vector2Int(1, 1), UI.Blue, true);
+            //move to io
+            string path = @"D:\enteties.json";
 
-            //make dict or smt with values for each level
-            int GhostsNr = 5;
-            int CoinsNr = 7;
-
-            //var res= Enumerable.Range(0, GhostsNr).Select(i=> em.CreateEnemy2(RandomPosWithCheck()).ToList()); //eeh doesn't work
-
-            for (int i = 0; i < GhostsNr; i++)
+            string entityData="";
+            if (File.Exists(path))
             {
-                em.CreateEnemy(RandomPosWithCheck());
+                entityData = File.ReadAllText(path);
+            }
+            //string entityData = @"[{""Name"":""Hero"",""Symbol"":""H"",""Color"":""Green"",""IsActive"":true,""IsStatic"":false,""IsPlayer"":true},{""Name"":""Ghost"",""Symbol"":""G"",""Color"":""DarkGray"",""IsActive"":true,""IsStatic"":false,""IsPlayer"":false,""Position"":{""X"":0,""Y"":0},""Points"":0}]";
+
+            var entityDataList = JsonSerializer.Deserialize<List<Entity>>(entityData);
+
+            foreach (Entity e in entityDataList)
+            {
+                em.AddEntity(e);
+                e.Position=RandomPosWithCheck();
+               
+                //Console.WriteLine(e.Name);
+               // Console.WriteLine(e.Position.X);
+               // Console.WriteLine(e.Position.Y);
+                //foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(e))
+                //{
+                //    string name = descriptor.Name;
+                //    object value = descriptor.GetValue(e);
+                //    Console.WriteLine("{0}={1}", name, value);
+
+                //}
             }
 
-            for (int i = 0; i < CoinsNr; i++)
-            {
-                em.CreateStatic(RandomPosWithCheck());
-            }
+            ////create entities
+            //em.CreateEntity("Hero",'H', new Vector2Int(1, 1), UI.Blue, true);
+
+            ////CreateEntity(string name, char symbol, Vector2Int position, ConsoleColor color, bool isPlayer = false, bool isStatic = false, int Points = 0)
+
+            //var entitiesToCreate=new Dictionary<string, int>()
+            //{
+            //    {"Hero",1 },
+            //    {"Ghosts",5 },
+            //    {"Coins",7 }
+            //};
+
+            //foreach (var entity in entitiesToCreate)
+            //{
+            //    for (int i = 0; i < entity.Value; i++)
+            //    {
+            //        em.CreateEntity(entity.Key+i.ToString(),'G',RandomPosWithCheck(),UI.DarkGray,false,false,10);
+            //    }
+            //}
+
+            //for (int i = 0; i < entitiesToCreate["Coins"]; i++)
+            //{
+            //    em.CreateStatic(RandomPosWithCheck());
+            //}
         }
 
-        void MakeEntGen()
-        {
-
-        }
-
+        /// <summary>
+        /// show points 2 rows below the map
+        /// </summary>
         public void ShowPoints()
         {
-            Vector2Int position = new (0, MapSize.Y + 2);
+            Vector2Int position = new (0, map.GetSizeV2().Y + 2);
             string str = $"Score: {Score} ";
-            UI.OutputSymbol(UI.White, str, position); 
+            UI.OutputSymbol("White", str, position); 
         }
 
+        /// <summary>
+        /// special random position generator that checks if the position is valid
+        /// </summary>
+        /// <returns>a valid Vector2Int position</returns>
         public Vector2Int RandomPosWithCheck()
         {
             Vector2Int randPos;
             while (true) //ugly check.. work on this
             {
-                randPos = Vector2Int.GetRandom(MapSize.X, MapSize.Y);
-                if (CanMove(randPos))
+                randPos = Vector2Int.GetRandom(map.GetSizeInt());
+                if (map.CanMove(randPos))
                     return randPos;
             }
         }
 
-        private void Move()
+        //alt. make a loop to get all acceleration and put everything else in entity class
+        //or divide into get input - check movement - move
+        private void UpdateEntities()
         {
-            //remake this with linq/delegate?
-
-            //var player = em.GetEntityList().FirstOrDefault(e => e.IsPlayer == true);
-            //have to check if not null... so is it really better?
-            //player.Acceleration = Controller.GetInput();
-
-            foreach (var entity in em.GetEntityList())
+            ///<summary>
+            /// update player acceleration and move
+            ///</summary>
+            var player = em.GetEntityList().FirstOrDefault(e => e.IsPlayer == true);
+            if (player == null)
             {
-                if (entity.IsPlayer)
-                    entity.Acceleration = Controller.GetInput();
-                else if (!entity.IsStatic) //for all other that is not statics
-                    entity.Acceleration = Controller.AIInput();
+                throw new InvalidOperationException("No player entities loaded, can't play..");
+            } else
+            {
+                Vector2Int acc = Controller.GetInput();
+                player.Acceleration = acc;
+                CheckMove(player);
+            }
 
-                //easy way to skip this for all that is not changed?
-                if (CanMove(entity.Position, entity.Acceleration))
-                {
-                    entity.RenderEntityTrace(maze[entity.Position.Y, entity.Position.X]);
-                    entity.RenderEntity();
-                }
-                    
-                CheckPos(entity.Position); //where to call this? use entity instead of pos?
+            ///<summary>
+            /// update npcs acceleration and move
+            ///</summary>
+            var npcs = em.GetEntityList().Where(e => e.IsPlayer == false && e.IsStatic == false);
+
+            npcs.ToList().ForEach(
+                i => {
+                    i.Acceleration = Controller.AIInput();
+                    CheckMove(i);
+                });
+
+            //npcs.ToList().ForEach(i => Console.Write("{0}\t", i));
+        }
+
+        /// <summary>
+        /// Check if move is possible in the accelerated direction, if so move and render
+        /// </summary>
+        /// <param name="entity"></param>
+        private void CheckMove(Entity entity)
+        {
+            if (map.CanMove(entity.Position, entity.Acceleration))
+            {
+                //check here for collision instead?
+
+                entity.RenderEntityTrace(map.GetChar(entity.Position.X, entity.Position.Y));
+                entity.RenderEntity();
+
+                CheckCollision(entity.Position); //where to call this? use entity instead of pos?
             }
         }
 
-        public void DrawMap()
-        {
-            for (int y = 0; y < MapSize.Y; y++)
-            {
-                for (int x = 0; x < MapSize.X; x++)
-                {
-                    UI.OutputSymbol(UI.White, maze[y, x].ToString(), new Vector2Int(x,y));
-                }
-                UI.NewLine();
-            }
-        }
 
-        bool IsWall(int x, int y) => maze[y, x] is not ' ';
-
-        public bool CanMove(Vector2Int pos)
-        {
-            if (pos.X>0 && pos.X<maze.GetLength(1) && pos.Y > 0 && pos.Y < maze.GetLength(0))
-                if (!IsWall(pos.X, pos.Y))
-                    return true;
-            return false;
-        }
-        //how to get rid of this one?
-        public bool CanMove(Vector2Int pos, Vector2Int acc)
-        {
-            pos += acc;
-            if (pos.X > 0 && pos.X < maze.GetLength(1) && pos.Y > 0 && pos.Y < maze.GetLength(0))
-                if (!IsWall(pos.X, pos.Y))
-                    return true;
-            return false;
-        }
-
-        public void CheckPos(Vector2Int pos) //change to entity as argument?
+        public void CheckCollision(Vector2Int pos) //change to entity as argument?
         {
             var entitiesList = em.GetEntityList();
 
             //get all entities at position that is active
             var entitiesAtPos = entitiesList.Where(e => e.Position == pos && e.IsActive).ToList();
+
             //get count of entities at this pos
             var NrEntities = entitiesAtPos.Count;
 
@@ -198,23 +216,21 @@ namespace LexNetGameR
 
                     foreach (var entity in collisionEntities)
                     {
-                        //---------- does not work correctly atm (since Lists instead of Dict)
-                        //because of deferred or smt else?
-
                         //make an X to mark action
-                        UI.OutputSymbol(UI.DarkRed, "X", playerEntitiy.Position);
+                        UI.OutputSymbol("DarkRed", "X", playerEntitiy.Position);
+
                         //remove the entity from the ent manager list
                         em.RemoveEntity(entity);
-                        if (entity is Enemy)
-                        {
-                            var temp = (Enemy)entity;
-                            Score += temp.Points;
-                        } else if(entity is Static)
-                        {
-                            var temp = (Static)entity;
-                            Score += temp.Points;
-                        }
 
+                        //different scores for different entities
+                        //if (entity is Enemy tempE)
+                        //{
+                        //    Score += tempE.Points;
+                        //} else if (entity is Static tempS)
+                        //{
+                        //    Score += tempS.Points;
+                        //}
+                        Score += entity.Points;
                         ShowPoints();
                     }
                 }

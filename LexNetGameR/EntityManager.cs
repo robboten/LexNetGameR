@@ -25,47 +25,66 @@ namespace LexNetGameR
         }
 
         //can I have only one but still make different ones?
-        public void CreateEntity(char symbol, Vector2Int position, ConsoleColor color, bool isPlayer = false)
-        {
-            Entity entity = new(symbol)
-            {
-                Position=position,
-                Color = color,
-                IsPlayer = isPlayer
-            };
-            AddEntity(entity);
-        }
+        //public void CreateEntity(char symbol, Vector2Int position, ConsoleColor color, bool isPlayer = false,bool isStatic=false,int Points=0)
+        //{
+        //    Entity entity = new(symbol)
+        //    {
+        //        Position=position,
+        //        Color = color,
+        //        IsPlayer = isPlayer,
+        //        IsStatic = isStatic,
+        //        Points = Points
+        //    };
+        //    AddEntity(entity);
+        //}
 
-        public void CreateStatic(Vector2Int position)
+        public void CreateEntity(string name, char symbol, Vector2Int position, ConsoleColor color, bool isPlayer = false, bool isStatic = false, int Points = 0)
         {
-            Static entity = new(position)
-            {
-                Position = position,
-            };
-            AddEntity(entity);
-        }
-        public void CreateEnemy(Vector2Int position)
-        {
-            Enemy entity = new(position)
+            Entity entity = new(name, symbol)
             {
                 Position = position,
+                CColor = color,
+                IsPlayer = isPlayer,
+                IsStatic = isStatic,
+                Points = Points
             };
             AddEntity(entity);
         }
 
-        public List<Entity> CreateEnemy2(Vector2Int position)
-        {
-            Enemy entity = new(position)
-            {
-                Position = position,
-            };
-            AddEntity(entity);
-            return EntitiesList;
-        }
+        //public void CreateStatic(Vector2Int position)
+        //{
+        //    Static entity = new(position)
+        //    {
+        //        Position = position,
+        //    };
+        //    AddEntity(entity);
+        //}
+        //public void CreateEnemy(Vector2Int position)
+        //{
+        //    Enemy entity = new(position)
+        //    {
+        //        Position = position,
+        //    };
+        //    AddEntity(entity);
+        //}
+
+        //public List<Entity> CreateEnemy2(Vector2Int position)
+        //{
+        //    Enemy entity = new(position)
+        //    {
+        //        Position = position,
+        //    };
+        //    AddEntity(entity);
+        //    return EntitiesList;
+        //}
 
 
-        public List<Entity> GetEntityList()
+        public List<Entity> GetEntityList()//IEnumerable<Entity> GetEntityList()
         {
+            //foreach (var item in EntitiesList)
+            //{
+            //    yield return item;
+            //}
             return EntitiesList.ToList(); //how to safeguard multiple changes at once?
         }
     }

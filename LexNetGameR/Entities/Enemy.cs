@@ -9,11 +9,11 @@ namespace LexNetGameR.Entities
 {
     internal class Enemy : Entity
     {
-        public int Points { get;}
+        //public int Points { get;}
         public Enemy(Vector2Int pos) : base('†', pos)
         {
             Points = 10;
-            Color = UI.DarkGray;
+            CColor = UI.DarkGray;
             IsStatic = false;
         }
     }

@@ -3,72 +3,72 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace LexNetGameR.Entities
 {
     internal class Entity
     {
+        //would love to make these into components, but not sure it's worth it
+        public string Name { get; set; }
         public char Symbol { get; set; }
-        public ConsoleColor Color { get; set; } = ConsoleColor.Green;
-        public Vector2Int Position { get; set; }
-        public Vector2Int Acceleration { get; set; } 
+        public ConsoleColor CColor { get; set; } = UI.Green; //should I remove ConsoleColor here?
+
+        public String Color { get; set; } 
+        public Vector2Int Position { get; set; } = Vector2Int.One;
+        public Vector2Int Acceleration { get; set; } = Vector2Int.Zero;
         public bool IsActive { get; set; } = true; //not sure this is needed since if it's not in list it won't be active... but just in case..
         public bool IsStatic { get; set; } = false;
         public bool IsPlayer { get; set; } = false;
 
+        public int Points { get; set; }
 
-        public Entity(char symbol)
+        //make all have pos
+
+        [JsonConstructor]
+        public Entity(string Name, char Symbol, Vector2Int Position, string Color="Blue", bool IsActive=true, bool IsStatic=false, bool IsPlayer=false, int Points=0)
         {
+            this.Name = Name;
+            this.Symbol = Symbol;
+            this.Position = Position;
+            this.Color = Color;
+            this.IsActive = IsActive;
+            this.IsStatic = IsStatic;
+            this.IsPlayer = IsPlayer;
+            this.Points = Points;
+        }
+        public Entity(string name, char symbol)
+        {
+            Name = name;
             Position = new(1, 1);
             Symbol = symbol;
         }
-
-        public Entity(Vector2Int position)
-        {
-            Position = position;
-        }
-
+        //public Entity(char symbol)
+        //{
+        //    Name = "hej";
+        //    Position = new(1, 1);
+        //    Symbol = symbol;
+        //}
 
         public Entity(char symbol, Vector2Int position)
         {
+            Name = "Emil";
             Position = position;
             Symbol = symbol;
         }
-        public Vector2Int GetPos()
-        {
-            return Position;
-        }
-        public void SetPosAcc(Vector2Int Acc)
-        {
-            Position += Acc;
-            Vector2Int pos = Position;
-            pos.Clamp(0, 9); //why doesn't this work directly on Position?
-            Position = pos;
-        }
-        public void SetPos(Vector2Int Pos)
-        {
-            Position = Pos;
-        }
 
-        public void RenderEntity()
+        public void RenderEntity() //take apart? Should move and render be in same?
         {
             Position += Acceleration;
-
             UI.OutputSymbol(Color, Symbol.ToString(), Position);
-
-        }
-        public void RenderEntity(Vector2Int acceleration)
-        {
-            Acceleration = acceleration;
-            Position += Acceleration;
-
-            UI.OutputSymbol(Color, Symbol.ToString(), Position);
+            //UI.OutputSymbol(CColor, Symbol.ToString(), Position);
         }
 
         public void RenderEntityTrace(char symbol)
         {
-            UI.OutputSymbol(UI.White, symbol.ToString(), Position);
+            UI.OutputSymbol(UI.MapColor, symbol.ToString(), Position);
         }
 
     }

@@ -10,55 +10,84 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace LexNetGameR
 {
-
-    internal class Cell
-    {
-        public char Symbol;
-        public Vector2Int Position;  
-        public ConsoleColor Color;
-        public Cell(Vector2Int pos)
-        {
-            Position = pos;
-            Symbol = '.';
-            Color = ConsoleColor.White;
-        }
-        public char GetCellSymbol()
-        {
-            return Symbol;
-        }
-        public void SetCellSymbol(Entity entity)
-        {
-            Symbol=entity.Symbol;
-        }
-    }
-
     internal class Map
     {
-        public Vector2Int Size { get; set; } 
-        public string Name { get; set; }
-
-        //remove cells and use pos only?
-        public Cell[,] cells;
-
-        public Map(string name, Vector2Int size)
+        private readonly char[,] maze =
         {
-            Name = name;
-            Size = size;
-            Vector2Int position = new();
+            { '╔','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','╗'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ','╔','═','═','═','╗',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ','╚','═','═','═','╝',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','╔','═','═','═','╗',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','╚','═','═','═','╝',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ','╔','═','═','═','╗',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ','╚','═','═','═','╝',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
+            { '╚','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','╝'}
 
-            cells = new Cell[Size.X, Size.Y];
-            for (int y=0; y<Size.Y; y++)
+        };
+        Vector2Int Size;
+        int MaxX;
+        int MaxY;
+        public Map()
+        {
+            Size.Set(maze.GetLength(1), maze.GetLength(0));
+            MaxX = maze.GetLength(1);
+            MaxY = maze.GetLength(0);
+        }
+
+        public char GetChar(int x, int y)
+        {
+            return maze[y, x];
+        }
+
+        public Tuple<int,int> GetSizeInt()
+        {
+            return Tuple.Create(Size.X,Size.Y);
+        }
+
+        public Vector2Int GetSizeV2()
+        {
+            return  new Vector2Int (Size.X, Size.Y);
+        }
+        public void DrawMap()
+        {
+            for (int y = 0; y < MaxY; y++)
             {
-                for (int x=0; x<Size.X; x++)
+                for (int x = 0; x < MaxX; x++)
                 {
-                    cells[x, y] = new Cell(position);
+                    UI.OutputSymbol(UI.MapColor, GetChar(x, y).ToString(), new Vector2Int(x, y));
                 }
+                UI.NewLine();
             }
         }
-        public Cell GetCell(Vector2Int pos)
+
+        bool IsWall(int x, int y) => GetChar(x,y) is not ' ';
+
+        public bool CanMove(Vector2Int pos)
         {
-            return cells[pos.X,pos.Y];
+            if (pos.X > 0 && pos.X < MaxX && pos.Y > 0 && pos.Y < MaxY)
+                if (!IsWall(pos.X, pos.Y))
+                    return true;
+            return false;
         }
+        //how to get rid of this one?
+        public bool CanMove(Vector2Int pos, Vector2Int acc)
+        {
+            pos += acc;
+            if (pos.X > 0 && pos.X < MaxX && pos.Y > 0 && pos.Y < MaxY)
+                if (!IsWall(pos.X, pos.Y))
+                    return true;
+            return false;
+        }
+
     }
 
 }
