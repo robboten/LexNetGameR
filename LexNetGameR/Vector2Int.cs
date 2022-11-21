@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LexNetGameR
 {
-    internal struct Vector2Int
+    public struct Vector2Int
     {
         public int X { get; set; }
         public int Y { get; set; }

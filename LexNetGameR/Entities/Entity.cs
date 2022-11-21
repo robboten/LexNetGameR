@@ -14,9 +14,7 @@ namespace LexNetGameR.Entities
         //would love to make these into components, but not sure it's worth it
         public string Name { get; set; }
         public char Symbol { get; set; }
-        public ConsoleColor CColor { get; set; } = UI.Green; //should I remove ConsoleColor here?
-
-        public String Color { get; set; } 
+        public string Color { get; set; } 
         public Vector2Int Position { get; set; } = Vector2Int.One;
         public Vector2Int Acceleration { get; set; } = Vector2Int.Zero;
         public bool IsActive { get; set; } = true; //not sure this is needed since if it's not in list it won't be active... but just in case..
@@ -39,25 +37,18 @@ namespace LexNetGameR.Entities
             this.IsPlayer = IsPlayer;
             this.Points = Points;
         }
-        public Entity(string name, char symbol)
-        {
-            Name = name;
-            Position = new(1, 1);
-            Symbol = symbol;
-        }
+        //public Entity(string name, char symbol)
+        //{
+        //    Name = name;
+        //    Position = new(1, 1);
+        //    Symbol = symbol;
+        //}
         //public Entity(char symbol)
         //{
         //    Name = "hej";
         //    Position = new(1, 1);
         //    Symbol = symbol;
         //}
-
-        public Entity(char symbol, Vector2Int position)
-        {
-            Name = "Emil";
-            Position = position;
-            Symbol = symbol;
-        }
 
         public void RenderEntity() //take apart? Should move and render be in same?
         {

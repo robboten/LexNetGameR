@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LexNetGameR
 {
-    internal class UI
+    public class UI
     {
         public const string MapColor = "White";
 

@@ -15,7 +15,7 @@ using LexNetGameR.Entities;
 
 namespace LexNetGameR
 {
-    internal class Game
+    internal class Game : IO
     {
         int Score;
         readonly Map map;
@@ -62,26 +62,16 @@ namespace LexNetGameR
         /// </summary>
         private void MakeEntities()
         {
-            //move to io
-            string path = @"D:\enteties.json";
-
-            string entityData="";
-            if (File.Exists(path))
-            {
-                entityData = File.ReadAllText(path);
-            }
-            //string entityData = @"[{""Name"":""Hero"",""Symbol"":""H"",""Color"":""Green"",""IsActive"":true,""IsStatic"":false,""IsPlayer"":true},{""Name"":""Ghost"",""Symbol"":""G"",""Color"":""DarkGray"",""IsActive"":true,""IsStatic"":false,""IsPlayer"":false,""Position"":{""X"":0,""Y"":0},""Points"":0}]";
-
-            var entityDataList = JsonSerializer.Deserialize<List<Entity>>(entityData);
+            List<Entity>? entityDataList = IO.ReadConfig();
 
             foreach (Entity e in entityDataList)
             {
                 em.AddEntity(e);
-                e.Position=RandomPosWithCheck();
-               
+                e.Position = RandomPosWithCheck();
+
                 //Console.WriteLine(e.Name);
-               // Console.WriteLine(e.Position.X);
-               // Console.WriteLine(e.Position.Y);
+                // Console.WriteLine(e.Position.X);
+                // Console.WriteLine(e.Position.Y);
                 //foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(e))
                 //{
                 //    string name = descriptor.Name;
