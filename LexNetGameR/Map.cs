@@ -36,11 +36,13 @@ namespace LexNetGameR
         Vector2Int Size;
         readonly int MaxX;
         readonly int MaxY;
+        List<Vector2Int> ValidPositionList;
         public Map()
         {
             Size.Set(maze.GetLength(1), maze.GetLength(0));
             MaxX = maze.GetLength(1);
             MaxY = maze.GetLength(0);
+            ValidPositionList=ValidPositions();
         }
 
         public char GetChar(int x, int y)
@@ -73,14 +75,49 @@ namespace LexNetGameR
         public bool CanMove(Vector2Int pos, Vector2Int acc)
         {
             pos += acc;
-            return TestPos(pos);
-        }
-        private bool TestPos(Vector2Int pos)
-        {
-            if (pos.X > 0 && pos.X < MaxX && pos.Y > 0 && pos.Y < MaxY)
-                if (!IsWall(pos.X, pos.Y))
+            if (ValidPositionList.Contains(pos))
                     return true;
             return false;
+        }
+
+        /// <summary>
+        /// special random position generator that checks if the position is valid
+        /// </summary>
+        /// <returns>a valid Vector2Int position</returns>
+        public Vector2Int RandomPosWithCheck()
+        {
+            List<Vector2Int> list = ValidPositionList;
+            Vector2Int randPos;
+            while (true) //ugly check.. work on this
+            {
+                randPos = Vector2Int.GetRandom(GetSizeInt());
+                if (list.Contains(randPos))
+                    return randPos;
+            }
+        }
+
+        /// <summary>
+        /// make a list with all valid positions once and for all
+        /// </summary>
+        public List<Vector2Int> ValidPositions()
+        {
+            List<Vector2Int> validPosList = new List<Vector2Int>();
+
+            for (int y = 0; y < MaxY; y++)
+            {
+                for (int x = 0; x < MaxX; x++)
+                {
+                    Vector2Int pos = new(x, y);
+                    if (pos.X > 0 && pos.X < MaxX && pos.Y > 0 && pos.Y < MaxY)
+                        if (!IsWall(pos.X, pos.Y))
+                        {
+                            //Console.WriteLine((pos.V2ToString()));
+                            validPosList.Add(pos);
+                        }
+
+                }
+            }
+            return validPosList;
         }
 
     }

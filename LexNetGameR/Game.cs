@@ -24,12 +24,14 @@ namespace LexNetGameR
         //em keeps track of all entities
         readonly EntityManager em;
 
+
         public Game()
         {
+            map = new();
             Score = 0;
             em = new();
-            map = new();
             UI = new ConsoleUI();
+            
         }
 
         /// <summary>
@@ -41,7 +43,7 @@ namespace LexNetGameR
             while (true)//(!(Console.KeyAvailable))
             {
                 UpdateEntities();
-            } 
+            }
         }
 
         /// <summary>
@@ -52,36 +54,23 @@ namespace LexNetGameR
             List<Entity>? entityDataList = ReadConfig();
             if(entityDataList != null)
             {
-                em.EntitiesInit(entityDataList);
                 UI.InitUI();
-                //MakeEntities();
                 map.DrawMap();
+                em.EntitiesInit(entityDataList);
+
                 //randomize positions
-                em.GetEntityList().ToList().ForEach(c => c.Position= RandomPosWithCheck());
+                em.GetEntityList().ToList().ForEach(c => c.Position= map.RandomPosWithCheck());
                 //render all entities to show them before move
                 em.GetEntityList().ToList().ForEach(c => c.RenderEntity());
 
-                UI.ShowPoints(map.GetSizeV2(), Score);
+                //UI.ShowPoints(map.GetSizeV2(), Score);
             }
             else throw new InvalidOperationException("No config loaded, can't play..");
         }
 
         //want to move this from here, but not sure with all the things it uses...
 
-        /// <summary>
-        /// special random position generator that checks if the position is valid
-        /// </summary>
-        /// <returns>a valid Vector2Int position</returns>
-        public Vector2Int RandomPosWithCheck()
-        {
-            Vector2Int randPos;
-            while (true) //ugly check.. work on this
-            {
-                randPos = Vector2Int.GetRandom(map.GetSizeInt());
-                if (map.CanMove(randPos, Vector2Int.Zero))
-                    return randPos;
-            }
-        }
+        
 
         //alt. make a loop to get all acceleration and put everything else in entity class
         //or divide into get input - check movement - move
@@ -111,8 +100,6 @@ namespace LexNetGameR
                     i.Acceleration = Controller.AIInput();
                     CheckMove(i);
                 });
-
-            //npcs.ToList().ForEach(i => Console.Write("{0}\t", i));
         }
 
         /// <summary>
