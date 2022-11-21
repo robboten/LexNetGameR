@@ -19,7 +19,7 @@ namespace LexNetGameR
     {
         int Score;
         readonly Map map;
-        ConsoleUI UI;
+        readonly ConsoleUI UI;
 
         //em keeps track of all entities
         readonly EntityManager em;
@@ -64,10 +64,15 @@ namespace LexNetGameR
         /// </summary>
         private void MakeEntities()
         {
-            List<Entity>? entityDataList = IO.ReadConfig();
-
-            foreach (Entity e in entityDataList)
+            List<Entity>? entityDataList = ReadConfig();
+            if (entityDataList!.Count == 0)
             {
+                throw new InvalidOperationException("No config loaded, can't play..");
+            }
+
+            for (int i = 0; i < entityDataList.Count; i++)
+            {
+                Entity e = entityDataList[i];
                 em.AddEntity(e);
                 e.Position = RandomPosWithCheck();
             }
