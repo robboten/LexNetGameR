@@ -56,7 +56,8 @@ namespace LexNetGameR
                 UI.InitUI();
                 //MakeEntities();
                 map.DrawMap();
-
+                //randomize positions
+                em.GetEntityList().ToList().ForEach(c => c.Position= RandomPosWithCheck());
                 //render all entities to show them before move
                 em.GetEntityList().ToList().ForEach(c => c.RenderEntity());
 
@@ -64,26 +65,6 @@ namespace LexNetGameR
             }
             else throw new InvalidOperationException("No config loaded, can't play..");
         }
-
-        ///// <summary>
-        ///// set up all the entities for the level
-        ///// </summary>
-        //private void MakeEntities()
-        //{
-        //    List<Entity>? entityDataList = ReadConfig();
-        //    if (entityDataList!.Count == 0)
-        //    {
-        //        throw new InvalidOperationException("No config loaded, can't play..");
-        //    }
-
-        //    for (int i = 0; i < entityDataList.Count; i++)
-        //    {
-        //        Entity e = entityDataList[i];
-        //        em.AddEntity(e);
-        //        e.Position = RandomPosWithCheck();
-        //    }
-        //}
-
 
         //want to move this from here, but not sure with all the things it uses...
 
