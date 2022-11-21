@@ -70,43 +70,7 @@ namespace LexNetGameR
             {
                 em.AddEntity(e);
                 e.Position = RandomPosWithCheck();
-
-                //Console.WriteLine(e.Name);
-                // Console.WriteLine(e.Position.X);
-                // Console.WriteLine(e.Position.Y);
-                //foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(e))
-                //{
-                //    string name = descriptor.Name;
-                //    object value = descriptor.GetValue(e);
-                //    Console.WriteLine("{0}={1}", name, value);
-
-                //}
             }
-
-            ////create entities
-            //em.CreateEntity("Hero",'H', new Vector2Int(1, 1), UI.Blue, true);
-
-            ////CreateEntity(string name, char symbol, Vector2Int position, ConsoleColor color, bool isPlayer = false, bool isStatic = false, int Points = 0)
-
-            //var entitiesToCreate=new Dictionary<string, int>()
-            //{
-            //    {"Hero",1 },
-            //    {"Ghosts",5 },
-            //    {"Coins",7 }
-            //};
-
-            //foreach (var entity in entitiesToCreate)
-            //{
-            //    for (int i = 0; i < entity.Value; i++)
-            //    {
-            //        em.CreateEntity(entity.Key+i.ToString(),'G',RandomPosWithCheck(),UI.DarkGray,false,false,10);
-            //    }
-            //}
-
-            //for (int i = 0; i < entitiesToCreate["Coins"]; i++)
-            //{
-            //    em.CreateStatic(RandomPosWithCheck());
-            //}
         }
 
         /// <summary>

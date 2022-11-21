@@ -43,12 +43,7 @@ namespace LexNetGameR.Entities
         //    Position = new(1, 1);
         //    Symbol = symbol;
         //}
-        //public Entity(char symbol)
-        //{
-        //    Name = "hej";
-        //    Position = new(1, 1);
-        //    Symbol = symbol;
-        //}
+
 
         public void RenderEntity() //take apart? Should move and render be in same?
         {

@@ -70,11 +70,6 @@ namespace LexNetGameR
 
         bool IsWall(int x, int y) => GetChar(x,y) is not ' ';
 
-        //public bool IsPossible(Vector2Int pos)
-        //{
-        //    return TestPos(pos);
-        //}
-
         public bool CanMove(Vector2Int pos, Vector2Int acc)
         {
             pos += acc;
