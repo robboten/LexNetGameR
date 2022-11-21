@@ -19,6 +19,7 @@ namespace LexNetGameR
     {
         int Score;
         readonly Map map;
+        ConsoleUI UI;
 
         //em keeps track of all entities
         readonly EntityManager em;
@@ -28,6 +29,7 @@ namespace LexNetGameR
             Score = 0;
             em = new();
             map = new();
+            UI = new ConsoleUI();
         }
 
         /// <summary>
@@ -114,7 +116,7 @@ namespace LexNetGameR
         {
             Vector2Int position = new (0, map.GetSizeV2().Y + 2);
             string str = $"Score: {Score} ";
-            UI.OutputSymbol("White", str, position); 
+            ConsoleUI.OutputSymbol("White", str, position); 
         }
 
         /// <summary>
@@ -127,7 +129,7 @@ namespace LexNetGameR
             while (true) //ugly check.. work on this
             {
                 randPos = Vector2Int.GetRandom(map.GetSizeInt());
-                if (map.CanMove(randPos))
+                if (map.CanMove(randPos, Vector2Int.Zero))
                     return randPos;
             }
         }
@@ -207,7 +209,7 @@ namespace LexNetGameR
                     foreach (var entity in collisionEntities)
                     {
                         //make an X to mark action
-                        UI.OutputSymbol("DarkRed", "X", playerEntitiy.Position);
+                        ConsoleUI.OutputSymbol("DarkRed", "X", playerEntitiy.Position);
 
                         //remove the entity from the ent manager list
                         em.RemoveEntity(entity);

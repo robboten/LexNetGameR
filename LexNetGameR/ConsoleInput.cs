@@ -6,31 +6,21 @@ using System.Threading.Tasks;
 
 namespace LexNetGameR
 {
-    internal static class ConsoleInput
+    public class ConsoleInput
     {
-        internal static ConsoleKey GetKey() => Console.ReadKey(intercept: true).Key;
+        private static ConsoleKey GetKey() => Console.ReadKey(intercept: true).Key;
 
         public static Vector2Int GetCommand()
         {
             var key = GetKey();
-            switch (key)
+            return key switch
             {
-                case ConsoleKey.LeftArrow:
-                    return Vector2Int.Left;
-                case ConsoleKey.RightArrow:
-                    return Vector2Int.Right;
-                case ConsoleKey.UpArrow:
-                    return Vector2Int.Up;
-                case ConsoleKey.DownArrow:
-                    return Vector2Int.Down;
-                default:
-                    return Vector2Int.Zero;
-
-                //case ConsoleKey.P:
-                //    PickUp();
-                //    break;
-                //case quit... return false
-            }
+                ConsoleKey.LeftArrow => Vector2Int.Left,
+                ConsoleKey.RightArrow => Vector2Int.Right,
+                ConsoleKey.UpArrow => Vector2Int.Up,
+                ConsoleKey.DownArrow => Vector2Int.Down,
+                _ => Vector2Int.Zero,
+            };
         }
     }
 }

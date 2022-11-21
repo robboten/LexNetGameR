@@ -63,25 +63,25 @@ namespace LexNetGameR
             {
                 for (int x = 0; x < MaxX; x++)
                 {
-                    UI.OutputSymbol(UI.MapColor, GetChar(x, y).ToString(), new Vector2Int(x, y));
+                    ConsoleUI.OutputSymbol("White", GetChar(x, y).ToString(), new Vector2Int(x, y));
                 }
-                UI.NewLine();
             }
         }
 
         bool IsWall(int x, int y) => GetChar(x,y) is not ' ';
 
-        public bool CanMove(Vector2Int pos)
-        {
-            if (pos.X > 0 && pos.X < MaxX && pos.Y > 0 && pos.Y < MaxY)
-                if (!IsWall(pos.X, pos.Y))
-                    return true;
-            return false;
-        }
-        //how to get rid of this one?
+        //public bool IsPossible(Vector2Int pos)
+        //{
+        //    return TestPos(pos);
+        //}
+
         public bool CanMove(Vector2Int pos, Vector2Int acc)
         {
             pos += acc;
+            return TestPos(pos);
+        }
+        private bool TestPos(Vector2Int pos)
+        {
             if (pos.X > 0 && pos.X < MaxX && pos.Y > 0 && pos.Y < MaxY)
                 if (!IsWall(pos.X, pos.Y))
                     return true;

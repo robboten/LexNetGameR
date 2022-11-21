@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LexNetGameR
 {
-    internal static class Controller
+    public static class Controller
     {
         public static Vector2Int GetInput()
         {

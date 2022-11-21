@@ -53,13 +53,13 @@ namespace LexNetGameR.Entities
         public void RenderEntity() //take apart? Should move and render be in same?
         {
             Position += Acceleration;
-            UI.OutputSymbol(Color, Symbol.ToString(), Position);
+            ConsoleUI.OutputSymbol(Color, Symbol.ToString(), Position);
             //UI.OutputSymbol(CColor, Symbol.ToString(), Position);
         }
 
         public void RenderEntityTrace(char symbol)
         {
-            UI.OutputSymbol(UI.MapColor, symbol.ToString(), Position);
+            ConsoleUI.OutputSymbol("White", symbol.ToString(), Position);
         }
 
     }
