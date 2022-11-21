@@ -9,5 +9,6 @@ namespace LexNetGameR
     public interface IUI
     {
         void InitUI();
+        public void ShowPoints(Vector2Int position, int Score);
     }
 }

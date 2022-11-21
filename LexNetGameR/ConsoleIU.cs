@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace LexNetGameR
 {
@@ -26,6 +27,16 @@ namespace LexNetGameR
         //    Console.SetCursorPosition(pos.X, pos.Y);
         //    Console.Write(symbol);
         //}
+
+        /// <summary>
+        /// show points 2 rows below the map
+        /// </summary>
+        public void ShowPoints(Vector2Int position, int Score)
+        {
+            var offset=new Vector2Int(0, position.Y+2);
+            string str = $"Score: {Score} ";
+            OutputSymbol("White", str, offset);
+        }
 
         public static void OutputSymbol(string color, string symbol, Vector2Int pos)
         {

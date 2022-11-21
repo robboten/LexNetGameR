@@ -43,6 +43,21 @@ namespace LexNetGameR
             return randV2I;
         }
 
+        /// <summary>
+        /// special random position generator that checks if the position is valid
+        /// </summary>
+        /// <returns>a valid Vector2Int position</returns>
+        public static Vector2Int RandomPosCheck(Map map, Tuple<int,int> Size)
+        {
+            Vector2Int randPos;
+            while (true) //ugly check.. work on this
+            {
+                randPos = GetRandom(Size);
+                if (map.CanMove(randPos, Zero))
+                    return randPos;
+            }
+        }
+
         //borrowed from Unity @ https://gist.github.com/twobob/c6b5bfa1101164c3a0bc0881189eeceb
         public static Vector2Int operator +(Vector2Int a, Vector2Int b)
         {

@@ -10,7 +10,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace LexNetGameR
 {
-    internal class Map
+    public class Map
     {
         private readonly char[,] maze =
         {

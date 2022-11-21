@@ -56,7 +56,7 @@ namespace LexNetGameR
             //render all entities to show them before move
             em.GetEntityList().ToList().ForEach(c => c.RenderEntity()); 
 
-            ShowPoints();
+            UI.ShowPoints(map.GetSizeV2(), Score);
         }
 
         /// <summary>
@@ -78,15 +78,8 @@ namespace LexNetGameR
             }
         }
 
-        /// <summary>
-        /// show points 2 rows below the map
-        /// </summary>
-        public void ShowPoints()
-        {
-            Vector2Int position = new (0, map.GetSizeV2().Y + 2);
-            string str = $"Score: {Score} ";
-            ConsoleUI.OutputSymbol("White", str, position); 
-        }
+
+        //want to move this from here, but not sure with all the things it uses...
 
         /// <summary>
         /// special random position generator that checks if the position is valid
@@ -192,7 +185,7 @@ namespace LexNetGameR
                         //    Score += tempS.Points;
                         //}
                         Score += entity.Points;
-                        ShowPoints();
+                        UI.ShowPoints(map.GetSizeV2(), Score);
                     }
                 }
                 //get other entity collisions for more complexity
