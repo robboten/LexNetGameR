@@ -34,8 +34,8 @@ namespace LexNetGameR
 
         };
         Vector2Int Size;
-        int MaxX;
-        int MaxY;
+        readonly int MaxX;
+        readonly int MaxY;
         public Map()
         {
             Size.Set(maze.GetLength(1), maze.GetLength(0));

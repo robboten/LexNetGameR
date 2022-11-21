@@ -33,18 +33,23 @@ namespace LexNetGameR
             return EntitiesList.ToList(); //how to safeguard multiple changes at once?
         }
 
-        ///// <summary>
-        ///// set up all the entities for the level
-        ///// </summary>
-        //private void EntitiesInit(List<Entity>? entityDataList)
-        //{
-        //    //List<Entity>? entityDataList = ReadConfig();
-        //    for (int i = 0; i < entityDataList.Count; i++)
-        //    {
-        //        Entity e = entityDataList[i];
-        //        AddEntity(e);
-        //        e.Position = RandomPosWithCheck();
-        //    }
-        //}
+        /// <summary>
+        /// set up all the entities for the level
+        /// </summary>
+        public void EntitiesInit(List<Entity> entityDataList)
+        {
+            //List<Entity>? entityDataList = ReadConfig();
+            for (int i = 0; i < entityDataList.Count; i++)
+            {
+                Entity e = entityDataList[i];
+                AddEntity(e);
+                if (e.Position.Equals(0))
+                {
+                    //how to randomize from here?
+                    e.Position = new Vector2Int(2, 2);//RandomPosWithCheck();
+                }
+                
+            }
+        }
     }
 }
