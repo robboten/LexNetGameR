@@ -38,16 +38,12 @@ namespace LexNetGameR
         };
         Vector2Int Size;
 
-        readonly int Width;
-        readonly int Height;
         readonly List<Vector2Int> ValidPositionList;
         readonly string MapColor;
         public Map()
         {
             MapColor = "White";
             Size.Set(maze.GetLength(1), maze.GetLength(0));
-            Width = Size.X;
-            Height = Size.Y;
             ValidPositionList = MakeValidPosList();
         }
 
@@ -67,9 +63,9 @@ namespace LexNetGameR
         }
         public void DrawMap(IUI UI)
         {
-            for (int y = 0; y < Height; y++)
+            for (int y = 0; y < Size.Y; y++)
             {
-                for (int x = 0; x < Width; x++)
+                for (int x = 0; x < Size.X; x++)
                 {
                     UI.OutputSymbol(MapColor, GetMapChar(x, y).ToString(), new Vector2Int(x, y));
                 }
@@ -172,12 +168,12 @@ namespace LexNetGameR
         {
             List<Vector2Int> validPosList = new List<Vector2Int>();
 
-            for (int y = 0; y < Height; y++)
+            for (int y = 0; y < Size.Y; y++)
             {
-                for (int x = 0; x < Width; x++)
+                for (int x = 0; x < Size.X; x++)
                 {
                     Vector2Int pos = new(x, y);
-                    if (pos.X > 0 && pos.X < Width && pos.Y > 0 && pos.Y < Height)
+                    if (pos.X > 0 && pos.X < Size.X && pos.Y > 0 && pos.Y < Size.Y)
                         if (!IsWall(pos.X, pos.Y))
                         {
                             //Console.WriteLine((pos.V2ToString()));
