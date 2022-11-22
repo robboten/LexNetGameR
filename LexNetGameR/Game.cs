@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
@@ -13,26 +14,32 @@ using LexNetGameR.Entities;
 //drop mines from inv?
 //add timer
 
+
+//get freespace list and em list - 
+//replace all fsl pos that has a em.pos hit
+
+//get list with voids, make a new copy, add the list of the enities pos, output the whole thing
+
 namespace LexNetGameR
 {
     internal class Game : IO
     {
         readonly Map map;
-        readonly ConsoleUI UI;
+        readonly IUI UI;
 
         bool IsGameRunning;
         int Score;
 
         //em keeps track of all entities
         readonly EntityManager em;
-        
-        public Game()
+
+        public Game(IUI ui)
         {
             IsGameRunning = true;
             map = new();
             Score = 0;
             em = new();
-            UI = new ConsoleUI();
+            this.UI = ui;
         }
 
         /// <summary>
@@ -56,13 +63,16 @@ namespace LexNetGameR
             if(entityDataList != null)
             {
                 UI.InitUI();
-                map.DrawMap();
+                map.DrawMap(UI);
+                
                 em.EntitiesInit(entityDataList);
-
+                
                 //randomize positions
                 em.GetEntityList().ToList().ForEach(c => c.Position= map.RandomPosWithCheck());
                 //render all entities to show them before move
-                em.GetEntityList().ToList().ForEach(c => c.RenderEntity());
+                em.GetEntityList().ToList().ForEach(c => c.MoveEntity());
+
+                map.RenderAll2(UI, em.GetEntityList(), map.GetMapPosList());
 
                 UI.ShowPoints(map.GetSizeV2(), Score);
             }
@@ -76,7 +86,8 @@ namespace LexNetGameR
             ///<summary>
             /// update player acceleration and move
             ///</summary>
-            var player = em.GetEntityList().FirstOrDefault(e => e.IsPlayer == true);
+            
+            var player = em.GetEntityList().First(e => e.IsPlayer == true);
             if (player == null)
             {
                 throw new InvalidOperationException("No player entities loaded, can't play..");
@@ -120,12 +131,16 @@ namespace LexNetGameR
         /// <param name="entity"></param>
         private void CheckMove(Entity entity)
         {
+            Debug.WriteLine(entity.Symbol);
             if (map.CanMove(entity.Position, entity.Acceleration))
             {
-                entity.RenderEntityTrace(map.GetChar(entity.Position.X, entity.Position.Y));
-                entity.RenderEntity();
-
+                entity.MoveEntity();
+                //map.ReDrawVoids(UI);
+                
+                //UI.RenderEntity(entity.Color, entity.Symbol.ToString(), entity.Position, entity.Acceleration);
+                //, map.GetChar(entity.Position.X, entity.Position.Y)
                 CheckCollision(entity.Position);
+                map.RenderAll2(UI, em.GetEntityList(), map.GetMapPosList());
             }
         }
 
@@ -156,7 +171,8 @@ namespace LexNetGameR
                     var collisionEntities = entitiesAtPos.Where(e => e.IsPlayer == false);
 
                     //make an X to mark action
-                    ConsoleUI.OutputSymbol("DarkRed", playerEntitiy.Symbol.ToString(), playerEntitiy.Position);
+                    //playerEntitiy.Color = "DarkRed";
+                    //UI.OutputSymbol("DarkRed", playerEntitiy.Symbol.ToString(), playerEntitiy.Position);
 
                     foreach (var entity in collisionEntities)
                     {

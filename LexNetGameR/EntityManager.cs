@@ -9,7 +9,7 @@ using LexNetGameR.Entities;
 
 namespace LexNetGameR
 {
-    internal class EntityManager
+    public class EntityManager
     {
         readonly List<Entity> EntitiesList;
 

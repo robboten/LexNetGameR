@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace LexNetGameR.Entities
 {
-    internal class Entity
+    public class Entity
     {
         //would love to make these into components, but not sure it's worth it
         public string Name { get; set; }
@@ -44,17 +44,9 @@ namespace LexNetGameR.Entities
         //    Symbol = symbol;
         //}
 
-
-        public void RenderEntity() //take apart? Should move and render be in same?
+        public void MoveEntity() //take apart? Should move and render be in same?
         {
             Position += Acceleration;
-            ConsoleUI.OutputSymbol(Color, Symbol.ToString(), Position);
-            //UI.OutputSymbol(CColor, Symbol.ToString(), Position);
-        }
-
-        public void RenderEntityTrace(char symbol)
-        {
-            ConsoleUI.OutputSymbol("White", symbol.ToString(), Position);
         }
 
     }

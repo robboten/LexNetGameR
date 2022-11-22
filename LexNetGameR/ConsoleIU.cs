@@ -1,5 +1,7 @@
-﻿using System;
+﻿using LexNetGameR.Entities;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -26,7 +28,7 @@ namespace LexNetGameR
             OutputSymbol("White", str, offset);
         }
 
-        public static void OutputSymbol(string color, string symbol, Vector2Int pos)
+        public void OutputSymbol(string color, string symbol, Vector2Int pos)
         {
             //output the symbol at the new pos
             Console.ForegroundColor = GetColor(color);
@@ -38,5 +40,14 @@ namespace LexNetGameR
         {
             return (ConsoleColor)Enum.Parse(typeof(ConsoleColor), color);
         }
+
+        public void RenderEntity(string color, string symbol, Vector2Int position, Vector2Int acceleration) //take apart? Should move and render be in same?
+        {
+            //var oldpos = position - acceleration;
+            OutputSymbol(color, symbol, position);
+
+            //Debug.WriteLine($"{symbol} - p: {position.V2ToString()} - a: {oldpos.V2ToString()}");
+        }
+
     }
 }
