@@ -33,6 +33,8 @@ namespace LexNetGameR
         //em keeps track of all entities
         readonly EntityManager em;
 
+        PlayerController Controller = new();
+
         public Game(IUI ui)
         {
             IsGameRunning = true;

@@ -31,23 +31,9 @@ namespace LexNetGameR
         public void OutputSymbol(string color, string symbol, Vector2Int pos)
         {
             //output the symbol at the new pos
-            Console.ForegroundColor = GetColor(color);
+            Console.ForegroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), color);
             Console.SetCursorPosition(pos.X, pos.Y);
             Console.Write(symbol);
         }
-
-        private static ConsoleColor GetColor(string color)
-        {
-            return (ConsoleColor)Enum.Parse(typeof(ConsoleColor), color);
-        }
-
-        public void RenderEntity(string color, string symbol, Vector2Int position, Vector2Int acceleration) //take apart? Should move and render be in same?
-        {
-            //var oldpos = position - acceleration;
-            OutputSymbol(color, symbol, position);
-
-            //Debug.WriteLine($"{symbol} - p: {position.V2ToString()} - a: {oldpos.V2ToString()}");
-        }
-
     }
 }
