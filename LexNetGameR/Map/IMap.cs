@@ -12,6 +12,8 @@ namespace LexNetGameR
         Vector2Int GetSizeV2();
         List<Vector2Int> MakeValidPosList();
         Vector2Int RandomPosWithCheck();
+
+        //not good at all.. but for now
         void RenderAll(IUI UI, List<Entity> el, List<Vector2Int> maplist);
     }
 }

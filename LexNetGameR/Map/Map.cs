@@ -14,6 +14,7 @@ namespace LexNetGameR
 {
     public class Map : IMap
     {
+        //move this out
         private readonly char[,] maze =
         {
             { '╔','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','╗'},
@@ -36,6 +37,7 @@ namespace LexNetGameR
 
         };
         Vector2Int Size;
+
         readonly int Width;
         readonly int Height;
         readonly List<Vector2Int> ValidPositionList;
@@ -44,8 +46,8 @@ namespace LexNetGameR
         {
             MapColor = "White";
             Size.Set(maze.GetLength(1), maze.GetLength(0));
-            Width = maze.GetLength(1);
-            Height = maze.GetLength(0);
+            Width = Size.X;
+            Height = Size.Y;
             ValidPositionList = MakeValidPosList();
         }
 
