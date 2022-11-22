@@ -11,6 +11,7 @@
     <Compile Remove="ConsoleInput.cs" />
     <Compile Remove="Entities\Enemy.cs" />
     <Compile Remove="Entities\Static.cs" />
+    <Compile Remove="Gameworld.cs" />
   </ItemGroup>
 
 </Project>

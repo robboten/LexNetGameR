@@ -71,7 +71,7 @@ namespace LexNetGameR
                 //randomize positions
                 em.GetEntityList().ToList().ForEach(c => c.Position= map.RandomPosWithCheck());
                 //render all entities to show them before move
-                em.GetEntityList().ToList().ForEach(c => c.MoveEntity());
+                em.GetEntityList().ToList().ForEach(c => c.TransformPosition());
 
                 map.RenderAll(UI, em.GetEntityList(), map.GetMapPosList());
 
@@ -135,7 +135,7 @@ namespace LexNetGameR
             Debug.WriteLine(entity.Symbol);
             if (map.CanMove(entity.Position, entity.Acceleration))
             {
-                entity.MoveEntity();
+                entity.TransformPosition();
                 CheckCollision(entity.Position);
                 map.RenderAll(UI, em.GetEntityList(), map.GetMapPosList());
             }

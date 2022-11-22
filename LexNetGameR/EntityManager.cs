@@ -9,17 +9,20 @@ using LexNetGameR.Entities;
 
 namespace LexNetGameR
 {
-    public class EntityManager
+    public class EntityManager : IEntityManager
     {
         readonly List<Entity> EntitiesList;
 
-        public EntityManager(){
+        public EntityManager()
+        {
             EntitiesList = new List<Entity>();
         }
-        void AddEntity(Entity entity){
+        public void AddEntity(Entity entity)
+        {
             EntitiesList.Add(entity);
         }
-        public void RemoveEntity(Entity entity){
+        public void RemoveEntity(Entity entity)
+        {
             EntitiesList.Remove(entity);
             entity.IsActive = false;
         }
@@ -43,7 +46,7 @@ namespace LexNetGameR
                     //how to randomize from here?
                     e.Position = new Vector2Int(2, 2);//RandomPosWithCheck();
                 }
-                
+
             }
         }
     }

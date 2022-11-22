@@ -34,6 +34,8 @@ namespace LexNetGameR.Entities
             this.IsPlayer = IsPlayer;
             this.Points = Points;
         }
+
+        //not sure if I should keep this
         //public Entity(string name, char symbol)
         //{
         //    Name = name;
@@ -41,7 +43,7 @@ namespace LexNetGameR.Entities
         //    Symbol = symbol;
         //}
 
-        public void MoveEntity() //take apart? Should move and render be in same?
+        public void TransformPosition() //take apart? Should move and render be in same?
         {
             Position += Acceleration;
         }

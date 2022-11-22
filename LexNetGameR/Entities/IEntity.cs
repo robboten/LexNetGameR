@@ -12,6 +12,6 @@
         Vector2Int Position { get; set; }
         char Symbol { get; set; }
 
-        void MoveEntity();
+        void TransformPosition();
     }
 }
