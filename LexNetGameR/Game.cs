@@ -17,21 +17,22 @@ namespace LexNetGameR
 {
     internal class Game : IO
     {
-        int Score;
         readonly Map map;
         readonly ConsoleUI UI;
 
+        bool IsGameRunning;
+        int Score;
+
         //em keeps track of all entities
         readonly EntityManager em;
-
-
+        
         public Game()
         {
+            IsGameRunning = true;
             map = new();
             Score = 0;
             em = new();
             UI = new ConsoleUI();
-            
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace LexNetGameR
         public void Run()
         {
             Init();
-            while (true)//(!(Console.KeyAvailable))
+            while (IsGameRunning)//(!(Console.KeyAvailable))
             {
                 UpdateEntities();
             }
@@ -63,15 +64,11 @@ namespace LexNetGameR
                 //render all entities to show them before move
                 em.GetEntityList().ToList().ForEach(c => c.RenderEntity());
 
-                //UI.ShowPoints(map.GetSizeV2(), Score);
+                UI.ShowPoints(map.GetSizeV2(), Score);
             }
             else throw new InvalidOperationException("No config loaded, can't play..");
         }
-
-        //want to move this from here, but not sure with all the things it uses...
-
         
-
         //alt. make a loop to get all acceleration and put everything else in entity class
         //or divide into get input - check movement - move
         private void UpdateEntities()
@@ -83,7 +80,8 @@ namespace LexNetGameR
             if (player == null)
             {
                 throw new InvalidOperationException("No player entities loaded, can't play..");
-            } else
+            } 
+            else
             {
                 Vector2Int acc = Controller.GetInput();
                 player.Acceleration = acc;
@@ -100,6 +98,20 @@ namespace LexNetGameR
                     i.Acceleration = Controller.AIInput();
                     CheckMove(i);
                 });
+
+            CheckGameOver();
+        }
+
+        private void CheckGameOver()
+        {
+            var entitiesLeft = em.GetEntityList().Where(e => e.IsPlayer == false && e.IsActive).Count();
+            if (entitiesLeft <= 0)
+            {
+                //-------change this to a better end screen--------
+                Console.WriteLine("You Won!");
+                Console.ReadKey();
+                IsGameRunning=false;
+            }
         }
 
         /// <summary>
@@ -110,16 +122,17 @@ namespace LexNetGameR
         {
             if (map.CanMove(entity.Position, entity.Acceleration))
             {
-                //check here for collision instead?
-
                 entity.RenderEntityTrace(map.GetChar(entity.Position.X, entity.Position.Y));
                 entity.RenderEntity();
 
-                CheckCollision(entity.Position); //where to call this? use entity instead of pos?
+                CheckCollision(entity.Position);
             }
         }
 
-
+        /// <summary>
+        /// check collision and update points
+        /// </summary>
+        /// <param name="pos"></param>
         public void CheckCollision(Vector2Int pos) //change to entity as argument?
         {
             var entitiesList = em.GetEntityList();
@@ -142,29 +155,20 @@ namespace LexNetGameR
                     //check what entity is involved in collision
                     var collisionEntities = entitiesAtPos.Where(e => e.IsPlayer == false);
 
+                    //make an X to mark action
+                    ConsoleUI.OutputSymbol("DarkRed", playerEntitiy.Symbol.ToString(), playerEntitiy.Position);
+
                     foreach (var entity in collisionEntities)
                     {
-                        //make an X to mark action
-                        ConsoleUI.OutputSymbol("DarkRed", "X", playerEntitiy.Position);
-
                         //remove the entity from the ent manager list
                         em.RemoveEntity(entity);
 
-                        //different scores for different entities
-                        //if (entity is Enemy tempE)
-                        //{
-                        //    Score += tempE.Points;
-                        //} else if (entity is Static tempS)
-                        //{
-                        //    Score += tempS.Points;
-                        //}
+                        //update score
                         Score += entity.Points;
                         UI.ShowPoints(map.GetSizeV2(), Score);
                     }
                 }
                 //get other entity collisions for more complexity
-
-                //see if em is empty except player for win
             }
         }
     }
