@@ -107,7 +107,7 @@ namespace LexNetGameR
         //}
 
         //not good in here.. but won't bother for now
-        public void RenderAll2(IUI UI, List<Entity> el, List<Vector2Int> maplist)
+        public void RenderAll(IUI UI, List<Entity> el, List<Vector2Int> maplist)
         {
             char s;
             string c;

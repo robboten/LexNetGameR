@@ -9,12 +9,12 @@ using System.Xml.Linq;
 
 namespace LexNetGameR.Entities
 {
-    public class Entity
+    public class Entity : IEntity
     {
         //would love to make these into components, but not sure it's worth it
         public string Name { get; set; }
         public char Symbol { get; set; }
-        public string Color { get; set; } 
+        public string Color { get; set; }
         public Vector2Int Position { get; set; } = Vector2Int.One;
         public Vector2Int Acceleration { get; set; } = Vector2Int.Zero;
         public bool IsActive { get; set; } = true; //not sure this is needed since if it's not in list it won't be active... but just in case..
@@ -23,7 +23,7 @@ namespace LexNetGameR.Entities
         public int Points { get; set; }
 
         [JsonConstructor]
-        public Entity(string Name, char Symbol, Vector2Int Position, string Color="Blue", bool IsActive=true, bool IsStatic=false, bool IsPlayer=false, int Points=0)
+        public Entity(string Name, char Symbol, Vector2Int Position, string Color = "Blue", bool IsActive = true, bool IsStatic = false, bool IsPlayer = false, int Points = 0)
         {
             this.Name = Name;
             this.Symbol = Symbol;

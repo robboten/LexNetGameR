@@ -73,7 +73,7 @@ namespace LexNetGameR
                 //render all entities to show them before move
                 em.GetEntityList().ToList().ForEach(c => c.MoveEntity());
 
-                map.RenderAll2(UI, em.GetEntityList(), map.GetMapPosList());
+                map.RenderAll(UI, em.GetEntityList(), map.GetMapPosList());
 
                 UI.ShowPoints(map.GetSizeV2(), Score);
             }
@@ -136,12 +136,8 @@ namespace LexNetGameR
             if (map.CanMove(entity.Position, entity.Acceleration))
             {
                 entity.MoveEntity();
-                //map.ReDrawVoids(UI);
-                
-                //UI.RenderEntity(entity.Color, entity.Symbol.ToString(), entity.Position, entity.Acceleration);
-                //, map.GetChar(entity.Position.X, entity.Position.Y)
                 CheckCollision(entity.Position);
-                map.RenderAll2(UI, em.GetEntityList(), map.GetMapPosList());
+                map.RenderAll(UI, em.GetEntityList(), map.GetMapPosList());
             }
         }
 

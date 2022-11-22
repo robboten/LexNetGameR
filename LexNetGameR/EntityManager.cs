@@ -16,20 +16,15 @@ namespace LexNetGameR
         public EntityManager(){
             EntitiesList = new List<Entity>();
         }
-        public void AddEntity(Entity entity){
+        void AddEntity(Entity entity){
             EntitiesList.Add(entity);
         }
         public void RemoveEntity(Entity entity){
             EntitiesList.Remove(entity);
             entity.IsActive = false;
         }
-
         public List<Entity> GetEntityList()//IEnumerable<Entity> GetEntityList()
         {
-            //foreach (var item in EntitiesList)
-            //{
-            //    yield return item;
-            //}
             return EntitiesList.ToList(); //how to safeguard multiple changes at once?
         }
 

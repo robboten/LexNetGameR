@@ -9,6 +9,8 @@ using LexNetGameR.Entities;
 
 namespace LexNetGameR
 {
+
+    //not used atm.. 
     internal class Manager<T> where T : Entity
     {
         private readonly List<T> ItemList;
