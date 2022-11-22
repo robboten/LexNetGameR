@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LexNetGameR.Entities;
 
-namespace LexNetGameR
+namespace LexNetGameR.Managers
 {
 
     //not used atm.. 
@@ -15,13 +15,16 @@ namespace LexNetGameR
     {
         private readonly List<T> ItemList;
 
-        public Manager(){
+        public Manager()
+        {
             ItemList = new List<T>();
         }
-        public void AddItem(T item){
+        public void AddItem(T item)
+        {
             ItemList.Add(item);
         }
-        public void RemoveItem(T item){
+        public void RemoveItem(T item)
+        {
             ItemList.Remove(item);
             item.IsActive = false;
         }
