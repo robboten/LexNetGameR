@@ -1,4 +1,4 @@
-﻿namespace LexNetGameR
+﻿namespace LexNetGameR.Controller
 {
     public interface IController
     {

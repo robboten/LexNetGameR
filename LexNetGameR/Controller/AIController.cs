@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LexNetGameR
+namespace LexNetGameR.Controller
 {
-    internal class AIControlller:IController
+    internal class AIController : IController
     {
         public Vector2Int GetInput()
         {

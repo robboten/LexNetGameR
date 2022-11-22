@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LexNetGameR
+namespace LexNetGameR.Controller
 {
     public class PlayerController : IController
     {

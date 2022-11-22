@@ -78,32 +78,33 @@ namespace LexNetGameR
         {
             return ValidPositionList;
         }
-        //does not work ...
-        public void RenderAll(IUI UI, List<Entity> el)
-        {
-            char s;
-            string c;
-            Vector2Int p;
 
-            var maplist = ValidPositionList;
+        ////does not work ...
+        //public void RenderAll(IUI UI, List<Entity> el)
+        //{
+        //    char s;
+        //    string c;
+        //    Vector2Int p;
 
-            //filter out all positions with ent from mapposlist
-            maplist.RemoveAll(x => !el.Any(y => y.Position == x));
-            foreach (var map in maplist)
-            {
-                s = GetMapChar(map.X, map.Y);
-                p = map;
-                c = MapColor;
-                UI.OutputSymbol(c, s.ToString(), p);
-            }
-            foreach (var e in el)
-            {
-                s = e.Symbol;
-                p = e.Position;
-                c = e.Color;
-                UI.OutputSymbol(c, s.ToString(), p);
-            }
-        }
+        //    var maplist = ValidPositionList;
+
+        //    //filter out all positions with ent from mapposlist
+        //    maplist.RemoveAll(x => !el.Any(y => y.Position == x));
+        //    foreach (var map in maplist)
+        //    {
+        //        s = GetMapChar(map.X, map.Y);
+        //        p = map;
+        //        c = MapColor;
+        //        UI.OutputSymbol(c, s.ToString(), p);
+        //    }
+        //    foreach (var e in el)
+        //    {
+        //        s = e.Symbol;
+        //        p = e.Position;
+        //        c = e.Color;
+        //        UI.OutputSymbol(c, s.ToString(), p);
+        //    }
+        //}
 
         //not good in here.. but won't bother for now
         public void RenderAll2(IUI UI, List<Entity> el, List<Vector2Int> maplist)

@@ -20,10 +20,7 @@ namespace LexNetGameR.Entities
         public bool IsActive { get; set; } = true; //not sure this is needed since if it's not in list it won't be active... but just in case..
         public bool IsStatic { get; set; } = false;
         public bool IsPlayer { get; set; } = false;
-
         public int Points { get; set; }
-
-        //make all have pos
 
         [JsonConstructor]
         public Entity(string Name, char Symbol, Vector2Int Position, string Color="Blue", bool IsActive=true, bool IsStatic=false, bool IsPlayer=false, int Points=0)

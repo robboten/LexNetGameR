@@ -8,6 +8,7 @@ using System.Numerics;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using LexNetGameR.Controller;
 using LexNetGameR.Entities;
 
 //ideas - todo
@@ -24,24 +25,20 @@ namespace LexNetGameR
 {
     internal class Game : IO
     {
-        readonly Map map;
         readonly IUI UI;
 
-        bool IsGameRunning;
-        int Score;
-
         //em keeps track of all entities
-        readonly EntityManager em;
+        readonly EntityManager em= new();
+        readonly PlayerController Controller = new();
+        readonly AIController AIController = new();
+        readonly Map map = new();
 
-        PlayerController Controller = new();
+        bool IsGameRunning;
+        int Score = 0;
 
         public Game(IUI ui)
         {
-            IsGameRunning = true;
-            map = new();
-            Score = 0;
-            em = new();
-            this.UI = ui;
+            UI = ui;
         }
 
         /// <summary>
@@ -50,6 +47,8 @@ namespace LexNetGameR
         public void Run()
         {
             Init();
+            IsGameRunning = true;
+
             while (IsGameRunning)//(!(Console.KeyAvailable))
             {
                 UpdateEntities();
@@ -108,7 +107,7 @@ namespace LexNetGameR
 
             npcs.ToList().ForEach(
                 i => {
-                    i.Acceleration = Controller.AIInput();
+                    i.Acceleration = AIController.GetInput();
                     CheckMove(i);
                 });
 
