@@ -10,6 +10,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using LexNetGameR.Controller;
 using LexNetGameR.Entities;
+using Microsoft.Extensions.Configuration;
 
 //ideas - todo
 //drop mines from inv?
@@ -26,19 +27,22 @@ namespace LexNetGameR
     internal class Game : IO
     {
         readonly IUI UI;
+        private readonly IConfiguration config;
 
         //em keeps track of all entities
         readonly EntityManager em= new();
         readonly PlayerController Controller = new();
         readonly AIController AIController = new();
-        readonly Map map = new();
+        readonly Map map;
 
         bool IsGameRunning;
         int Score = 0;
 
-        public Game(IUI ui)
+        public Game(IUI ui, IConfiguration config)
         {
+            map = new(config);
             UI = ui;
+            this.config = config;
         }
 
         /// <summary>

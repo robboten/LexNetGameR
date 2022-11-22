@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using LexNetGameR.Entities;
+using Microsoft.Extensions.Configuration;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace LexNetGameR
@@ -15,7 +16,7 @@ namespace LexNetGameR
     public class Map : IMap
     {
         //move this out
-        private readonly char[,] maze =
+        private readonly char[,] mazeold =
         {
             { '╔','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','═','╗'},
             { '║',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','║'},
@@ -38,13 +39,36 @@ namespace LexNetGameR
         };
         Vector2Int Size;
 
+
+        char[,] maze;
         readonly List<Vector2Int> ValidPositionList;
         readonly string MapColor;
-        public Map()
+        public Map(IConfiguration config)
         {
-            MapColor = "White";
+            MapColor = "White"; //don't like this - should be foregroundcolor for ui
+
+            //yuk
+            var stringmaze=config.GetSection("game:maze").Get<List<string[]>>()!;
+            char[][] jaggedarr = stringmaze.Select(x => string.Concat(x).ToCharArray()).ToArray();
+            maze= ImperativeConvert(jaggedarr);
+
             Size.Set(maze.GetLength(1), maze.GetLength(0));
             ValidPositionList = MakeValidPosList();
+        }
+
+        static char[,] ImperativeConvert(char[][] source)
+        {
+            char[,] result = new char[source.Length, source[0].Length];
+
+            for (int i = 0; i < source.Length; i++)
+            {
+                for (int k = 0; k < source[0].Length; k++)
+                {
+                    result[i, k] = source[i][k];
+                }
+            }
+
+            return result;
         }
 
         public char GetMapChar(int x, int y)
