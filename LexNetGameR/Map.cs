@@ -12,7 +12,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace LexNetGameR
 {
-    public class Map
+    public class Map : IMap
     {
         private readonly char[,] maze =
         {
@@ -46,7 +46,7 @@ namespace LexNetGameR
             Size.Set(maze.GetLength(1), maze.GetLength(0));
             Width = maze.GetLength(1);
             Height = maze.GetLength(0);
-            ValidPositionList=MakeValidPosList();
+            ValidPositionList = MakeValidPosList();
         }
 
         public char GetMapChar(int x, int y)
@@ -54,14 +54,14 @@ namespace LexNetGameR
             return maze[y, x];
         }
 
-        public Tuple<int,int> GetSizeInt()
+        public Tuple<int, int> GetSizeInt()
         {
-            return Tuple.Create(Size.X,Size.Y);
+            return Tuple.Create(Size.X, Size.Y);
         }
 
         public Vector2Int GetSizeV2()
         {
-            return  new Vector2Int (Size.X, Size.Y);
+            return new Vector2Int(Size.X, Size.Y);
         }
         public void DrawMap(IUI UI)
         {
@@ -114,7 +114,7 @@ namespace LexNetGameR
             Vector2Int p;
 
             List<Vector2Int> epl = el.Select(o => o.Position).ToList(); //get all ent pos into a list
-            
+
             foreach (var pos in maplist)
             {
                 if (epl.Contains(pos))
@@ -136,14 +136,14 @@ namespace LexNetGameR
             }
         }
 
-        bool IsWall(int x, int y) => GetMapChar(x,y) is not ' ';
+        bool IsWall(int x, int y) => GetMapChar(x, y) is not ' ';
 
         public bool CanMove(Vector2Int pos, Vector2Int acc)
         {
             var lpos = pos; //work with instance
             lpos += acc;
             if (ValidPositionList.Contains(lpos))
-                    return true;
+                return true;
             return false;
         }
 
